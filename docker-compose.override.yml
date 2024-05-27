@@ -1,0 +1,17 @@
+version: '3.6'
+
+services:
+  web:
+    restart: always
+    ports:
+      - 8069:8069
+      - 8072:8072
+    volumes:
+      - web_data:/var/lib/odoo
+      - $PWD/odoo.staging.conf:/etc/odoo/odoo.conf
+      - $PWD/addons:/mnt/extra-addons
+    command: ["odoo", "--proxy-mode", "-d", "${DB:-}", "-u", "${UPDATE:-base}"]
+
+  db:
+    restart: always
+    

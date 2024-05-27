@@ -1,0 +1,21 @@
+version: '3.6'
+
+services:
+  web:
+    ports:
+      - 80:8069
+      - 8074:8072
+      - 5680:5678
+    volumes:
+      - web_data:/var/lib/odoo
+      - $PWD/odoo.conf:/etc/odoo/odoo.conf
+      - $PWD/addons:/mnt/extra-addons
+    tty: true
+    stdin_open: true
+    command: ["odoo", "--dev", "all", "-u", "${UPDATE:-}", "-i", "${INSTALL:-}", "-d", "${DB:-}"]
+
+  db:
+    logging:
+        driver: none
+    ports:
+      - 5436:5432

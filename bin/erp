@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from lib.program import parser
+from lib.start_stop_command import cmd_start, cmd_stop
+from lib.shell_command import cmd_shell
+from lib.connect_command import cmd_connect
+from lib.login_command import cmd_login
+from lib.scaffold_command import cmd_scaffold
+
+args = parser.parse_args()
+
+if args.command == 'start':
+    cmd_start(args)
+elif args.command == 'login':
+    cmd_login(args)
+elif args.command == 'scaffold':
+    cmd_scaffold(args)
+elif args.command == 'shell':
+    cmd_shell(args)
+elif args.command == 'connect':
+    cmd_connect(args)
+elif args.command == 'stop':
+    cmd_stop(args)

@@ -1,0 +1,98 @@
+<odoo>
+    <menuitem
+        id="menu_onboarding"
+        name="Onboarding"/>
+
+    <!-- Records -->
+
+    <!-- onboarding -->
+    <record id="action_onboarding" model="ir.actions.act_window">
+        <field name="name">Onboarding</field>
+        <field name="res_model">onboarding_app.onboarding</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- department -->
+    <record id="action_onboarding_department" model="ir.actions.act_window">
+        <field name="name">Department</field>
+        <field name="res_model">onboarding_app.department</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- task type -->
+    <record id="action_onboarding_task_type" model="ir.actions.act_window">
+        <field name="name">Task Type</field>
+        <field name="res_model">onboarding_app.task.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- task -->
+    <record id="action_onboarding_task" model="ir.actions.act_window">
+        <field name="name">Task</field>
+        <field name="res_model">onboarding_app.task</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- job position -->
+    <record id="action_onboarding_job_position" model="ir.actions.act_window">
+        <field name="name">Job Position</field>
+        <field name="res_model">onboarding_app.job.position</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu items -->
+
+    <!-- onboarding menu item -->
+    <menuitem id="menu_onboarding_activities"
+        name="Onboarding"
+        parent="menu_onboarding"
+        action="action_onboarding"
+    />
+
+    <!-- activities menu item -->
+    <menuitem id="menu_onboarding_onboarding"
+        name="Activities"
+        parent="menu_onboarding"
+    />
+
+    <!-- configuration menu item -->
+    <menuitem id="menu_onboarding_configuration"
+        name="Configurations"
+        parent="menu_onboarding"
+    />
+
+    <!-- department under configurations -->
+    <menuitem id="menu_onboarding_department"
+        name="Department"
+        parent="menu_onboarding_configuration"
+        action="action_onboarding_department"
+        sequence="10"
+    />
+
+    <!-- job position under configurations -->
+    <menuitem id="menu_onboarding_job_position"
+        name="Job Position"
+        parent="menu_onboarding_configuration"
+        action="action_onboarding_job_position"
+        sequence="20"
+    />
+
+    <!-- task type under configurations -->
+    <menuitem id="menu_onboarding_task_type"
+        name="Task Type"
+        parent="menu_onboarding_configuration"
+        action="action_onboarding_task_type"
+        sequence="30"
+    />
+
+    <!-- task under configurations -->
+    <menuitem id="menu_onboarding_task"
+        name="Task"
+        parent="menu_onboarding_configuration"
+        action="action_onboarding_task"
+        sequence="40"
+    />
+
+    
+</odoo>

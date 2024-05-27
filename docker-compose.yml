@@ -1,0 +1,48 @@
+version: '3.6'
+
+services:
+  web:
+    image: odoo16:16.20230501
+    build:
+      context: ./odoo-docker
+      network: host
+    container_name: onboarding_odoo
+    depends_on:
+      - db
+    expose:
+      - '8069'
+      - '5678'
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD_FILE=/run/secrets/password
+    user: odoo
+    volumes:
+      - web_data:/var/lib/odoo
+      - $PWD/addons:/mnt/extra-addons
+    secrets:
+      - password
+    working_dir: /var/lib/odoo
+
+  db:
+    image: postgres:14-alpine
+    container_name: onboarding_odoo_db
+    expose:
+      - '5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD_FILE=/run/secrets/password
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    
+    secrets:
+      - password
+
+volumes:
+  web_data:
+  db_data:
+
+secrets:
+  password:
+    file: $PWD/secret
