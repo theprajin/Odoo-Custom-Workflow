@@ -118,14 +118,3 @@ class Onboarding(models.Model):
     #         "view_mode": "form",
     #         "target": "new",
     #     }
-
-    def btn_send_for_approval(self):
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": "Send Approval",
-            "res_model": "onboarding_app.onboarding.sendtoapproval.wizard",
-            "view_mode": "form",
-            "target": "new",
-            "res_id": self.id,
-        }

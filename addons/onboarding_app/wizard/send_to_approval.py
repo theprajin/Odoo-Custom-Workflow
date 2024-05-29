@@ -5,5 +5,5 @@ class SendToApprovalWizard(models.TransientModel):
     _name = "onboarding_app.onboarding.sendtoapproval.wizard"
     _description = "Send to Approval"
 
-    def button_confirm(self):
-        print("Sent to approval")
+    def action_confirm(self):
+        print("Message: Sent to approval")

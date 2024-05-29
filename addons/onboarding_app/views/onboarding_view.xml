@@ -8,8 +8,9 @@
             <form>
                 <header>
                     <field name="state" invisible="1"/>
-                    <button name="btn_send_for_approval"
+                    <button name="%(action_send_to_ongoing_wizard)d"
                         string="Send For Approval"
+                        type="action"
                         attrs="{'invisible': [('state', 'not in', ['draft'])]}"
                         class="oe_highlight"
                     />
