@@ -12,6 +12,14 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- activities -->
+    <record id="action_onboarding_activities" model="ir.actions.act_window">
+        <field name="name">Activities</field>
+        <field name="res_model">onboarding_app.task</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
     <!-- department -->
     <record id="action_onboarding_department" model="ir.actions.act_window">
         <field name="name">Department</field>
@@ -41,19 +49,34 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- tags -->
+    <record id="action_onboarding_tag" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">onboarding_app.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- tags -->
+    <record id="action_onboarding_stage" model="ir.actions.act_window">
+        <field name="name">Stage</field>
+        <field name="res_model">onboarding_app.onboarding.stage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <!-- Menu items -->
 
     <!-- onboarding menu item -->
-    <menuitem id="menu_onboarding_activities"
+    <menuitem id="menu_onboarding_onboarding"
         name="Onboarding"
         parent="menu_onboarding"
         action="action_onboarding"
     />
 
     <!-- activities menu item -->
-    <menuitem id="menu_onboarding_onboarding"
+    <menuitem id="menu_onboarding_activities"
         name="Activities"
         parent="menu_onboarding"
+        action="action_onboarding_activities"
     />
 
     <!-- configuration menu item -->
@@ -92,6 +115,30 @@
         parent="menu_onboarding_configuration"
         action="action_onboarding_task"
         sequence="40"
+    />
+    
+    <!--Extra information-->
+    <menuitem id="menu_onboarding_extra"
+        name="Extra Information"
+        parent="menu_onboarding_configuration"
+        sequence="50" />
+
+    <!-- tags under configurations -->
+    <menuitem id="menu_onboarding_tag"
+        name="Tags"
+        parent="menu_onboarding_extra"
+        action="action_onboarding_tag"
+        sequence="60"
+    />
+
+   
+
+    <!-- tags under configurations -->
+    <menuitem id="menu_onboarding_stage"
+        name="Stages"
+        parent="menu_onboarding_configuration"
+        action="action_onboarding_stage"
+        sequence="70"
     />
 
     

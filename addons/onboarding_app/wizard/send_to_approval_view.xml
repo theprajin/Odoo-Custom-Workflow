@@ -1,0 +1,57 @@
+<!-- <odoo>
+    <record id="view_send_to_approval" model="ir.ui.view">
+        <field name="name">Send To Approval</field>
+        <field name="res_model">onboarding_app.onboarding.sendtoapproval.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <h1>Are your sure you want to send this to ongoing</h1>
+                <footer>
+                    <button 
+                        type="action"
+                        name="button_confirm"
+                        string="Confirm"
+                        class="oe_highlight"
+                    />
+                    <button 
+                        special="cancel"
+                        class="btn-secondary"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sendtoapproval" model="ir.action.act_window">
+        <field name="name">Send To Confirm</field>
+        <field name="res_model">onboarding_app.onboarding.sendtoapproval.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="onboarding_app.onboarding" />
+        <field name="binding_view_types">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo> -->
+
+<odoo>
+    <record id="view_send_to_approval" model="ir.ui.view">
+        <field name="name">Send To Approval</field>
+        <field name="model">onboarding_app.onboarding.sendtoapproval.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <h1>Are you sure you want to send this for approval?</h1>
+                <footer>
+                    <button type="object" name="button_confirm" string="Confirm" class="oe_highlight"/>
+                    <button special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sendtoapproval" model="ir.actions.act_window">
+        <field name="name">Send To Confirm</field>
+        <field name="res_model">onboarding_app.onboarding.sendtoapproval.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="model_onboarding_app_onboarding"/>
+        <field name="binding_view_types">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

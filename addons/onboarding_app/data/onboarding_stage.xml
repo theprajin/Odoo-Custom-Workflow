@@ -1,0 +1,32 @@
+<odoo noupdate="1">
+    <record id="onboarding_stage_draft" model="onboarding_app.onboarding.stage">
+        <field name="name">Draft</field>
+        <field name="sequence">1</field>
+        <field name="state">draft</field>
+    </record>
+    <record id="onboarding_stage_sent_for_approval" model="onboarding_app.onboarding.stage">
+        <field name="name">Sent For Approval</field>
+        <field name="sequence">2</field>
+        <field name="state">sent for approval</field>
+    </record>
+    <record id="onboarding_stage_approved" model="onboarding_app.onboarding.stage">
+        <field name="name">Approved</field>
+        <field name="sequence">3</field>
+        <field name="state">approved</field>
+    </record>
+    <record id="onboarding_stage_ongoing" model="onboarding_app.onboarding.stage">
+        <field name="name">Ongoing</field>
+        <field name="sequence">4</field>
+        <field name="state">ongoing</field>
+    </record>
+    <record id="onboarding_stage_email_invited" model="onboarding_app.onboarding.stage">
+        <field name="name">Email Invited</field>
+        <field name="sequence">5</field>
+        <field name="state">email invited</field>
+    </record>
+    <record id="onboarding_stage_confirm" model="onboarding_app.onboarding.stage">
+        <field name="name">Confirm</field>
+        <field name="sequence">6</field>
+        <field name="state">confirm</field>
+    </record>
+</odoo>

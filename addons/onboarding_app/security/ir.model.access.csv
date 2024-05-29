@@ -1,7 +1,13 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_onboarding_department,access.onboarding.department,model_onboarding_app_department,,1,1,1,1
-access_onboarding_onboarding,access.onboarding.onboarding,model_onboarding_app_onboarding,,1,1,1,1
 access_onboarding_configurations,access.onboarding.configurations,model_onboarding_app_configuration,,1,1,1,1
 access_onboarding_tasks,access.onboarding.tasks,model_onboarding_app_task,,1,1,1,1
 access_onboarding_task_type,access.onboarding.task.type,model_onboarding_app_task_type,,1,1,1,1
 access_onboarding_job_position,access.onboarding.job.position,model_onboarding_app_job_position,,1,1,1,1
+access_onboarding_tag,access.onboarding.tag,model_onboarding_app_tag,,1,1,1,1
+access_onboarding_onboarding,access.onboarding.onboarding,model_onboarding_app_onboarding,,1,1,1,1
+access_onboarding_onboarding_line,access.onboarding.onboarding.line,model_onboarding_app_onboarding_line,,1,1,1,1
+access_onboarding_stage,access.onboarding.stage,model_onboarding_app_onboarding_stage,,1,1,1,1
+access_onboarding_approval_line,access.approval.line,model_onboarding_app_approval_line,,1,1,1,1
+access_onboarding_document_line,access.document.line,model_onboarding_app_document_document_line,,1,1,1,1
+access_onboarding_sendtoapproval_wizard,access.onboarding.sendtoapproval.wizard,model_onboarding_app_onboarding_sendtoapproval_wizard,,1,1,1,1
