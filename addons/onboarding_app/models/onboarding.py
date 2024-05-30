@@ -108,13 +108,3 @@ class Onboarding(models.Model):
     @api.model
     def _group_expand_stage_id(self, stages, domain, order):
         return stages.search(domain, order=order)
-
-    # def btn_send_for_approval(self):
-    #     self.ensure_one()
-    #     return {
-    #         "type": "ir.actions.act_window",
-    #         "name": "Send Approval",
-    #         "res_model": "onboarding_app.onboarding.sendtoapproval.wizard",
-    #         "view_mode": "form",
-    #         "target": "new",
-    #     }
