@@ -15,3 +15,4 @@ access_onboarding_approval_wizard,access.onboarding.approval.wizard,model_onboar
 access_onboarding_ongoing_wizard,access.onboarding.ongoing.wizard,model_onboarding_app_onboarding_ongoing_wizard,,1,1,1,1
 access_onboarding_email_invited_wizard,access.onboarding.email.invited.wizard,model_onboarding_app_onboarding_email_invited_wizard,,1,1,1,1
 access_onboarding_confirm_wizard,access.onboarding.confirm.wizard,model_onboarding_app_onboarding_confirm_wizard,,1,1,1,1
+access_onboarding_app_onboarding_task_list,access.onboarding_app.onboarding.task.list,model_onboarding_app_onboarding_task_list,,1,1,1,1

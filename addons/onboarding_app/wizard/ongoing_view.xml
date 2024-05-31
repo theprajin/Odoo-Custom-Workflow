@@ -5,7 +5,7 @@
         <field name="arch" type="xml">
             <form string="Ongoing">
                 <div>
-                    Are you sure you want to send this to ongoing stage
+                    Are you sure you want to send this to ongoing stage?
                 </div>
                 <field name="approval_id" invisible="1" />
                 <footer>

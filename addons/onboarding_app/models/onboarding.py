@@ -17,8 +17,6 @@ class ApprovalLine(models.Model):
 
     approval_line_id = fields.Many2one("onboarding_app.onboarding", required=True)
     approval_remark = fields.Char("Approval Remark")
-    created_by = fields.Char("Created By")
-    created_on = fields.Char("Created On")
 
 
 class DocumentLine(models.Model):
@@ -37,6 +35,16 @@ class ExtraInformationLine(models.Model):
         "onboarding_app.onboarding", required=True
     )
     extra_information = fields.Char("Extra Information")
+
+
+class OnboardingTaskList(models.Model):
+    _name = "onboarding_app.onboarding.task.list"
+    _description = "Onboarding Task List"
+
+    onboarding_id = fields.Many2one("onboarding_app.onboarding", required=True)
+    title = fields.Char()
+    created_by = fields.Char()
+    created_on = fields.Char()
 
 
 class Onboarding(models.Model):
@@ -90,6 +98,12 @@ class Onboarding(models.Model):
         "onboarding_app.extra.information.line",
         "extra_information_line_id",
         string="Extra Information",
+    )
+
+    onboarding_task_list_id = fields.One2many(
+        "onboarding_app.onboarding.task.list",
+        "onboarding_id",
+        string="Onboarding Task List",
     )
 
     @api.model

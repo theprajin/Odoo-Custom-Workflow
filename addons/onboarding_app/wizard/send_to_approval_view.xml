@@ -5,9 +5,10 @@
         <field name="arch" type="xml">
             <form string="Send To Approval">
                 <div>
-                    Are you sure you want to send this to approval
+                    Are you sure you want to send this to approval?
                 </div>
                 <field name="draft_id" invisible="1" />
+                
 
                 <footer>
                     <button string="Confirm" name="action_confirm" type="object"/>

@@ -5,7 +5,7 @@
         <field name="arch" type="xml">
             <form string="Confirm">
                 <div>
-                    Are you sure you want to confirm
+                    Are you sure you want to confirm?
                 </div>
                 <field name="email_invited_id" invisible="1" />
                 <footer>

@@ -12,6 +12,8 @@ class AppprovalWizard(models.Model):
         required=True,
     )
 
+    remark = fields.Char(required=True)
+
     approval_state = fields.Selection(
         [
             ("approve", "Approve"),
@@ -40,7 +42,26 @@ class AppprovalWizard(models.Model):
             if self.sent_to_approval_id:
                 approved = self.env.ref("onboarding_app.onboarding_stage_approved")
                 self.sent_to_approval_id.sudo().write({"stage_id": approved.id})
+                # approval remark create
+                # approval_remark = self.env["onboarding_app.approval.line"].create(
+                #     {
+                #         "approval_line_id": self.sent_to_approval_id.id,
+                #         "approval_remark": self.remark,
+                #     }
+                # )
+                self.approval_remark_creation()
+                print("approve")
+
             print("approve")
 
         elif self.approval_state == "reject":
+            self.approval_remark_creation()
             print("reject")
+
+    def approval_remark_creation(self):
+        self.env["onboarding_app.approval.line"].create(
+            {
+                "approval_line_id": self.sent_to_approval_id.id,
+                "approval_remark": self.remark,
+            }
+        )

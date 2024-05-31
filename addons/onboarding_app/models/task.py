@@ -13,4 +13,4 @@ class Task(models.Model):
     )
     deadline = fields.Integer(string="Deadline(days)")
     assign_to = fields.Many2one("res.users", string="Assign To")
-    onboarding_id = fields.Many2one("onboarding_app.onboarding")
+    # onboarding_id = fields.Many2one("onboarding_app.onboarding")
