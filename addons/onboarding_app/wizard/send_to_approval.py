@@ -6,7 +6,10 @@ class SendToApprovalWizard(models.TransientModel):
     _description = "Send to Approval"
 
     draft_id = fields.Many2one(
-        "onboarding_app.onboarding", "Draft", readonly=True, required=True
+        "onboarding_app.onboarding",
+        "Draft",
+        readonly=True,
+        required=True,
     )
 
     @api.model

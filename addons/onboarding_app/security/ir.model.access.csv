@@ -11,3 +11,7 @@ access_onboarding_stage,access.onboarding.stage,model_onboarding_app_onboarding_
 access_onboarding_approval_line,access.approval.line,model_onboarding_app_approval_line,,1,1,1,1
 access_onboarding_document_line,access.document.line,model_onboarding_app_document_document_line,,1,1,1,1
 access_onboarding_sendtoapproval_wizard,access.onboarding.sendtoapproval.wizard,model_onboarding_app_onboarding_sendtoapproval_wizard,,1,1,1,1
+access_onboarding_approval_wizard,access.onboarding.approval.wizard,model_onboarding_app_onboarding_approval_wizard,,1,1,1,1
+access_onboarding_ongoing_wizard,access.onboarding.ongoing.wizard,model_onboarding_app_onboarding_ongoing_wizard,,1,1,1,1
+access_onboarding_email_invited_wizard,access.onboarding.email.invited.wizard,model_onboarding_app_onboarding_email_invited_wizard,,1,1,1,1
+access_onboarding_confirm_wizard,access.onboarding.confirm.wizard,model_onboarding_app_onboarding_confirm_wizard,,1,1,1,1

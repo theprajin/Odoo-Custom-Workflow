@@ -14,26 +14,37 @@
                         attrs="{'invisible': [('state', 'not in', ['draft'])]}"
                         class="oe_highlight"
                     />
-                    <button name="btn_approve"
+                    <button name="%(action_approval_wizard)d" 
+                        type="action"
                         string="Approve"
                         attrs="{'invisible': [('state','not in', ['sent for approval'])]}"
                         class="oe_highlight"
                     />
-                    <button name="btn_reject"
+                    <button name="%(action_reject_wizard)d"
+                        type="action"
                         string="Reject"
                         attrs="{'invisible': [('state','not in', ['sent for approval'])]}"
                         class="oe_highlight"
                     />
                     <button 
-                        name="btn_ongoing"
+                        name="%(action_ongoing_wizard)d"
+                        type="action"
                         string="Sent To Ongoing"
                         attrs="{'invisible': [('state','not in', ['approved'])]}"
                         class="oe_highlight"
                     />
                     <button 
-                        name="btn_sent_email_invite"
+                        name="%(action_email_invited_wizard)d"
+                        type="action"
                         string="Sent Email Invitation"
                         attrs="{'invisible': [('state','not in', ['ongoing'])]}"
+                        class="oe_highlight"
+                    />
+                    <button 
+                        name="%(action_confrim_wizard)d"
+                        type="action"
+                        string="Confirm"
+                        attrs="{'invisible': [('state','not in', ['email invited'])]}"
                         class="oe_highlight"
                     />
                     <field name="stage_id" widget="statusbar" 
@@ -67,9 +78,14 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Approval Remark">
-                            <field name="approval_line_id">
-                                <tree editable="bottom">
+                        <page 
+                            string="Approval Remark" 
+                            attrs="{'invisible': [('state', 'not in', ['sent for approval'])]}"
+                            
+                            
+                        >
+                            <field name="approval_line_id" create="false">
+                                <tree editable="bottom" create="0">
                                     <field name="approval_remark" />
                                     <field name="created_by"/>
                                     <field name="created_on"/>
