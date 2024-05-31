@@ -43,8 +43,14 @@ class OnboardingTaskList(models.Model):
 
     onboarding_id = fields.Many2one("onboarding_app.onboarding", required=True)
     title = fields.Char()
-    created_by = fields.Char()
-    created_on = fields.Char()
+    # description
+    # task_id = fields.Many2many("onboarding_app.task")
+
+    # @api.depends("task_id")
+    # def _compute_title(self):
+    #     for record in self:
+    #         task_titles = ", ".join(record.task_id.mapped("title"))
+    #         record.title = task_titles or "No Tasks"
 
 
 class Onboarding(models.Model):
