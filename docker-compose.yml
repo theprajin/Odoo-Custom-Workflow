@@ -39,6 +39,18 @@ services:
     secrets:
       - password
 
+  pgadmin:
+        container_name: container-pgadmin
+        image: dpage/pgadmin4
+        depends_on:
+          - db
+        ports:
+          - "5050:80"
+        environment:
+          PGADMIN_DEFAULT_EMAIL: admin@admin.com
+          PGADMIN_DEFAULT_PASSWORD: root
+        restart: unless-stopped
+
 volumes:
   web_data:
   db_data:

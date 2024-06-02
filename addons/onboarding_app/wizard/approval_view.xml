@@ -3,23 +3,25 @@
         <field name="name">approval.wizard</field>
         <field name="model">onboarding_app.onboarding.approval.wizard</field>
         <field name="arch" type="xml">
-            <field name="approval_state" invisible="1" />
-            <form string="approval" attrs="{'invisible': [('approval_state','not in', ['approve'])]}">
-                <div>
+            <form string="approval" >
+                <field name="approval_state" invisible="1" />
+                <field name="sent_to_approval_id" invisible="1"/>
+            
+                <div attrs="{'invisible': [('approval_state','not in', ['approve'])]}">
                     Are you sure you want to approve?
                 </div>
-                <field name="sent_to_approval_id" invisible="1"/>
-                <field name="remark" required="1"/>
+                <div attrs="{'invisible': [('approval_state','not in', ['reject'])]}">
+                    Are you sure you want to reject?
+                </div>
+                <br/>
+                <group >                     
+                    <field name="remark" required="1"/>                        
+                </group>                    
                 <footer>
                     <button string="Confirm" name="action_confirm" type="object" />
                     <button string="Cancel" special="cancel" class="btn-secondary" />
                 </footer>
-            </form>
-            <form string="reject" attrs="{'invisible': [('approval_state','not in', ['reject'])]}">
-                <div>
-                    Are you sure you want to reject
-                </div>
-                <field name="remark" required="1"/>
+                
             </form>
         </field>
     </record>

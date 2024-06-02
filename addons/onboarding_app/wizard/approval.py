@@ -42,20 +42,17 @@ class AppprovalWizard(models.Model):
             if self.sent_to_approval_id:
                 approved = self.env.ref("onboarding_app.onboarding_stage_approved")
                 self.sent_to_approval_id.sudo().write({"stage_id": approved.id})
-                # approval remark create
-                # approval_remark = self.env["onboarding_app.approval.line"].create(
-                #     {
-                #         "approval_line_id": self.sent_to_approval_id.id,
-                #         "approval_remark": self.remark,
-                #     }
-                # )
                 self.approval_remark_creation()
+                self.approved_user_creation()
+                created_user = self.env["res.users"].search(
+                    [("name", "=", self.sent_to_approval_id.name)]
+                )
+                print(f"created User: {created_user}")
                 print("approve")
-
-            print("approve")
 
         elif self.approval_state == "reject":
             self.approval_remark_creation()
+
             print("reject")
 
     def approval_remark_creation(self):
@@ -63,5 +60,16 @@ class AppprovalWizard(models.Model):
             {
                 "approval_line_id": self.sent_to_approval_id.id,
                 "approval_remark": self.remark,
+            }
+        )
+
+    def approved_user_creation(self):
+        onboarding = self.sent_to_approval_id
+        self.env["res.users"].create(
+            {
+                "name": onboarding.name,
+                "login": onboarding.email,
+                "email": onboarding.email,
+                "phone": onboarding.phone,
             }
         )

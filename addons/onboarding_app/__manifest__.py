@@ -3,10 +3,7 @@
     "description": "Human Resources",
     "summary": "Onboarding App",
     "author": "Amnil Tech Team",
-    "depends": [
-        "base",
-        "web",
-    ],
+    "depends": ["base", "web", "mail"],
     "application": True,
     "data": [
         "data/onboarding_stage.xml",

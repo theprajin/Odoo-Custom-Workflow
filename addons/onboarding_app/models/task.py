@@ -6,11 +6,11 @@ class Task(models.Model):
     _description = "Task"
 
     title = fields.Char(required=True)
-    description = fields.Char(size=25)
+    description = fields.Char(required=True)
     type_id = fields.Many2one("onboarding_app.task.type", string="Type")
     job_position_id = fields.Many2one(
         "onboarding_app.job.position", string="Job Position"
     )
-    deadline = fields.Integer(string="Deadline(days)")
+    deadline = fields.Integer(string="Deadline(days)", required=True)
     # assign_to = fields.Many2one("res.users", string="Assign To")
     # onboarding_task_list_id = fields.Many2many("onboarding_app.onboarding.task.list")
