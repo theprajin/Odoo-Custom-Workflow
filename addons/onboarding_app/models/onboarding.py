@@ -127,6 +127,7 @@ class Onboarding(models.Model):
         string="Onboarding Task List",
         compute="_compute_onboarding_task_list",
         store=True,
+        readonly=False,
     )
 
     @api.model
@@ -149,18 +150,17 @@ class Onboarding(models.Model):
     @api.depends()
     def _compute_onboarding_task_list(self):
         print("here we are")
-        for record in self:
-            tasks = self.env["onboarding_app.task"].search([])
-            task_list = [
-                (
-                    0,
-                    0,
-                    {
-                        "title": task.title,
-                        "description": task.description,
-                        "deadline": task.deadline,
-                    },
-                )
-                for task in tasks
-            ]
-            record.sudo().onboarding_task_list_id = task_list
+        tasks = self.env["onboarding_app.task"].search([])
+        task_list = [
+            (
+                0,
+                0,
+                {
+                    "title": task.title,
+                    "description": task.description,
+                    "deadline": task.deadline,
+                },
+            )
+            for task in tasks
+        ]
+        self.onboarding_task_list_id = task_list
