@@ -10,6 +10,7 @@ class EmailInvitedWizard(models.Model):
         "Email Invited",
         readonly=True,
         required=True,
+        ondelete="cascade"
     )
 
     @api.model

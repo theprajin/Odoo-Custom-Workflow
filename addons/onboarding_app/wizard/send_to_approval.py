@@ -10,6 +10,7 @@ class SendToApprovalWizard(models.TransientModel):
         "Draft",
         readonly=True,
         required=True,
+        ondelete="cascade",
     )
 
     @api.model

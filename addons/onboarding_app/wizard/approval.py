@@ -10,6 +10,7 @@ class AppprovalWizard(models.Model):
         "Sent to Approval",
         readonly=True,
         required=True,
+        ondelete="cascade",
     )
 
     remark = fields.Char(required=True)
@@ -44,11 +45,12 @@ class AppprovalWizard(models.Model):
                 self.sent_to_approval_id.sudo().write({"stage_id": approved.id})
                 self.approval_remark_creation()
                 self.approved_user_creation()
-                created_user = self.env["res.users"].search(
-                    [("name", "=", self.sent_to_approval_id.name)]
-                )
-                print(f"created User: {created_user}")
-                print("approve")
+                
+                # created_user = self.env["res.users"].search(
+                #     [("name", "=", self.sent_to_approval_id.name)]
+                # )
+                # print(f"created User: {created_user}")
+                # print("approve")
 
         elif self.approval_state == "reject":
             self.approval_remark_creation()

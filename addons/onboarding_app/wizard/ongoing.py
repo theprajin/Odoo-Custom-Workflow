@@ -10,6 +10,7 @@ class OngoingWizard(models.Model):
         "Ongoing",
         readonly=True,
         required=True,
+        ondelete="cascade",
     )
 
     @api.model
@@ -31,5 +32,6 @@ class OngoingWizard(models.Model):
         if self.approval_id:
             ongoing = self.env.ref("onboarding_app.onboarding_stage_ongoing")
             self.approval_id.sudo().write({"stage_id": ongoing.id})
+            self.approval_id.populate_onboarding_task_list()
 
         print("Ongoing")

@@ -10,6 +10,7 @@ class ConfirmWizard(models.Model):
         "Confirm",
         readonly=True,
         required=True,
+        ondelete="cascade",
     )
 
     @api.model

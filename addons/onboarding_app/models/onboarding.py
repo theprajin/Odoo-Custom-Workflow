@@ -1,11 +1,14 @@
-from odoo import models, fields, api
+import re
+from odoo import models, fields, api, exceptions
 
 
 class OnboardingLine(models.Model):
     _name = "onboarding_app.onboarding.line"
     _description = "Onboarding Line"
 
-    onboarding_id = fields.Many2one("onboarding_app.onboarding", required=True)
+    onboarding_id = fields.Many2one(
+        "onboarding_app.onboarding", required=True, ondelete="cascade"
+    )
     remark = fields.Char("Remark")
     created_by = fields.Char("Created By")
     created_on = fields.Char("Created On")
@@ -15,7 +18,9 @@ class ApprovalLine(models.Model):
     _name = "onboarding_app.approval.line"
     _description = "Approval Line"
 
-    approval_line_id = fields.Many2one("onboarding_app.onboarding", required=True)
+    approval_line_id = fields.Many2one(
+        "onboarding_app.onboarding", required=True, ondelete="cascade"
+    )
     approval_remark = fields.Char("Approval Remark")
 
 
@@ -23,7 +28,9 @@ class DocumentLine(models.Model):
     _name = "onboarding_app.document.document.line"
     _description = "Document Line"
 
-    document_line_id = fields.Many2one("onboarding_app.onboarding", required=True)
+    document_line_id = fields.Many2one(
+        "onboarding_app.onboarding", required=True, ondelete="cascade"
+    )
     document = fields.Char("Documents")
 
 
@@ -32,7 +39,7 @@ class ExtraInformationLine(models.Model):
     _description = "Extra Information Line"
 
     extra_information_line_id = fields.Many2one(
-        "onboarding_app.onboarding", required=True
+        "onboarding_app.onboarding", required=True, ondelete="cascade"
     )
     extra_information = fields.Char("Extra Information")
 
@@ -41,30 +48,11 @@ class OnboardingTaskList(models.Model):
     _name = "onboarding_app.onboarding.task.list"
     _description = "Onboarding Task List"
 
-    onboarding_id = fields.Many2one("onboarding_app.onboarding")
+    onboarding_id = fields.Many2one("onboarding_app.onboarding", ondelete="cascade")
     title = fields.Char(required=True)
     description = fields.Char(required=True)
-    description = fields.Char(string="Description")
-    deadline = fields.Integer(string="Deadline(days)", required=True)
-
-    # @api.depends("task_id")
-    # def _compute_title(self):
-    #     for record in self:
-    #         task_titles = ", ".join(record.task_id.mapped("title"))
-    #         record.title = task_titles or "No Tasks"
-
-    # def tasks(self):
-    #     task_list = []
-    #     task_related_to_job_positon = self.env["onboarding_app.task"].search(
-    #         [("job_position_id", "=", "onboarding_id.job_position_id")]
-    #     )
-    #     for task in task_related_to_job_positon:
-    #         data = {
-    #             "title": task.title,
-    #             "description": task.description,
-    #         }
-    #         task_list.append((0, 0, data))
-    #         return task_list
+    deadline = fields.Date(string="Deadline(days)", default=fields.Date.today)
+    assign_to = fields.Many2one("res.users", ondelete="cascade")
 
 
 class Onboarding(models.Model):
@@ -72,16 +60,19 @@ class Onboarding(models.Model):
     _description = "Onboarding"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    title = fields.Char(required=True)
-    name = fields.Char(required=True)
-    email = fields.Char(required=True)
-    phone = fields.Char(required=True)
+    title = fields.Char(required=True, tracking=True)
+    name = fields.Char(required=True, tracking=True)
+    email = fields.Char(required=True, tracking=True)
+    phone = fields.Char(size=14, required=True, tracking=True)
     address = fields.Char(required=True)
     department_id = fields.Many2one(
-        "onboarding_app.department", string="Department", required=True
+        "onboarding_app.department", string="Department", required=True, tracking=True
     )
     job_position_id = fields.Many2one(
-        "onboarding_app.job.position", string="Job Position", required=True
+        "onboarding_app.job.position",
+        string="Job Position",
+        required=True,
+        tracking=True,
     )
     user_id = fields.Many2one("res.users", string="User")
     tags = fields.Many2many("onboarding_app.tag", string="Tags")
@@ -100,19 +91,19 @@ class Onboarding(models.Model):
     line_ids = fields.One2many(
         "onboarding_app.onboarding.line",
         "onboarding_id",
-        string="Onboarding Features",
+        string="Remarks",
     )
 
     approval_line_id = fields.One2many(
         "onboarding_app.approval.line",
         "approval_line_id",
-        string="Approval Features",
+        string="Approval Remark",
     )
 
     document_line_id = fields.One2many(
         "onboarding_app.document.document.line",
         "document_line_id",
-        string="Document Uploading Feature",
+        string="Document",
     )
 
     extra_information_line_id = fields.One2many(
@@ -125,10 +116,29 @@ class Onboarding(models.Model):
         "onboarding_app.onboarding.task.list",
         "onboarding_id",
         string="Onboarding Task List",
-        compute="_compute_onboarding_task_list",
-        store=True,
-        readonly=False,
     )
+
+    _sql_constraints = [
+        (
+            "name_uniq",
+            "UNIQUE (email, phone)",
+            "Onboarding with this email and phone already exists",
+        ),
+    ]
+
+    @api.constrains("email")
+    def _check_email(self):
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
+        for record in self:
+            if not re.fullmatch(regex, record.email):
+                raise exceptions.ValidationError("Invalid Email")
+
+    @api.constrains("phone")
+    def _check_phone(self):
+        regex = "^\\+?[1-9][0-9]{7,14}$"
+        for record in self:
+            if not re.match(regex, record.phone):
+                raise exceptions.ValidationError("Invalid Phone Number")
 
     @api.model
     def _default_onboarding_stage_id(self):
@@ -147,8 +157,7 @@ class Onboarding(models.Model):
     def _group_expand_stage_id(self, stages, domain, order):
         return stages.search(domain, order=order)
 
-    @api.depends()
-    def _compute_onboarding_task_list(self):
+    def populate_onboarding_task_list(self):
         print("here we are")
         tasks = self.env["onboarding_app.task"].search([])
         task_list = [
@@ -158,7 +167,6 @@ class Onboarding(models.Model):
                 {
                     "title": task.title,
                     "description": task.description,
-                    "deadline": task.deadline,
                 },
             )
             for task in tasks
