@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, date
 import re
 from odoo import models, fields, api, exceptions
 
@@ -72,6 +72,10 @@ class OnboardingTaskList(models.Model):
             elif not task.assign_to:
                 task.status = "draft"
 
+    @api.depends()
+    def _compute_deadline_date(self):
+        pass
+
     def btn_complete(self):
         for record in self:
             record.status = "completed"
@@ -125,9 +129,9 @@ class Onboarding(models.Model):
     experience = fields.Integer()
     website = fields.Char()
     age = fields.Integer()
-    task_completion_percentage = fields.Integer(
+    completed_task_count = fields.Integer(
         string="Task Completion %",
-        # compute="_compute_task_completion_percentage",
+        compute="_compute_completed_task_count",
         store=True,
     )
 
@@ -177,6 +181,15 @@ class Onboarding(models.Model):
         ),
     ]
 
+    @api.model
+    def _default_onboarding_stage_id(self):
+        Stage = self.env["onboarding_app.onboarding.stage"]
+        return Stage.search([("state", "=", "draft")], limit=1)
+
+    @api.model
+    def _group_expand_stage_id(self, stages, domain, order):
+        return stages.search(domain, order=order)
+
     @api.onchange("email")
     def _check_email(self):
         regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
@@ -201,15 +214,6 @@ class Onboarding(models.Model):
                 # raise exceptions.ValidationError("Invalid Phone Number")
                 return {"warning": warning}
 
-    @api.model
-    def _default_onboarding_stage_id(self):
-        Stage = self.env["onboarding_app.onboarding.stage"]
-        return Stage.search([("state", "=", "draft")], limit=1)
-
-    @api.model
-    def _group_expand_stage_id(self, stages, domain, order):
-        return stages.search(domain, order=order)
-
     @api.onchange("department_id")
     def _onchange_department_id(self):
         self.job_position_id = False
@@ -219,24 +223,57 @@ class Onboarding(models.Model):
             }
         }
 
+    @api.depends("onboarding_task_list_id.status")
+    def _compute_completed_task_count(self):
+        for record in self:
+            total_tasks = len(record.onboarding_task_list_id)
+            completed_tasks = record.onboarding_task_list_id.filtered(
+                lambda task: task.status == "completed"
+            )
+            print(f"completed task: {len(completed_tasks)}")
+            print(f"total task: {total_tasks}")
+            if total_tasks > 0:
+                completion_percentage = (len(completed_tasks) / total_tasks) * 100
+                record.completed_task_count = int(completion_percentage)
+                print(completion_percentage)
+            else:
+                record.completed_task_count = 0
+
     def populate_onboarding_task_list(
         self,
     ):  # call this for onchange in job position id
         print("here we are")
         tasks = self.env["onboarding_app.task"].search([])
         self.onboarding_task_list_id = [(5, 0, 0)]
-        task_list = [
-            (
-                0,
-                0,
-                {
-                    "title": task.name,
-                    "description": task.description,
-                    "status": "draft",
-                },
+        # task_list = [
+        #     (
+        #         0,
+        #         0,
+        #         {
+        #             "title": task.name,
+        #             "description": task.description,
+        #             "status": "draft",
+        #             "deadline": task.deadline,
+        #         },
+        #     )
+        #     for task in tasks
+        # ]
+        task_list = []
+        for task in tasks:
+            deadline_date = date.today() + timedelta(task.deadline)
+            task_list.append(
+                (
+                    0,
+                    0,
+                    {
+                        "title": task.name,
+                        "description": task.description,
+                        "status": "draft",
+                        "deadline": deadline_date,
+                    },
+                )
             )
-            for task in tasks
-        ]
+
         self.onboarding_task_list_id = task_list
 
 

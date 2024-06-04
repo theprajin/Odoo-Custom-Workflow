@@ -45,7 +45,7 @@ class AppprovalWizard(models.Model):
                 self.sent_to_approval_id.sudo().write({"stage_id": approved.id})
                 self.approval_remark_creation()
                 self.approved_user_creation()
-                
+
                 # created_user = self.env["res.users"].search(
                 #     [("name", "=", self.sent_to_approval_id.name)]
                 # )
@@ -67,7 +67,7 @@ class AppprovalWizard(models.Model):
 
     def approved_user_creation(self):
         onboarding = self.sent_to_approval_id
-        self.env["res.users"].create(
+        self.env["res.users"].with_context(no_invite_email=True).create(
             {
                 "name": onboarding.name,
                 "login": onboarding.email,

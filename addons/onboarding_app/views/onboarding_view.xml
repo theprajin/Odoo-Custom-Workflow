@@ -8,6 +8,8 @@
             <form>
                 <header>
                     <field name="state" invisible="1"/>
+                    <field name="completed_task_count" invisible="1"/>
+                    
                     <button name="%(action_send_to_ongoing_wizard)d"
                         string="Send For Approval"
                         type="action"
@@ -36,8 +38,8 @@
                     <button 
                         name="%(action_email_invited_wizard)d"
                         type="action"
-                        string="Sent Email Invitation"
-                        attrs="{'invisible': [('state','not in', ['ongoing'])]}"
+                        string="Send Email Invitation"
+                        attrs="{'invisible': ['|',('state','not in', ['ongoing']),('completed_task_count', '&lt;', 100)]}"
                         class="oe_highlight"
                     />
                     <button 
@@ -149,13 +151,15 @@
                         <page 
                             string="Onboarding Task List" 
                             attrs="{'invisible': [('state', 'not in', ['ongoing', 'email invited', 'confirm'])]}">
+                            
+                            <field name="completed_task_count" widget="percentpie"/>
                             <field name="onboarding_task_list_id" >
                                 <form>
                                     <field name="is_task_complete" invisible="1" />
                                     <header>
                                         <button name="btn_complete" string="Completed"
                                                 type="object" class="oe_highlight" title="Completed"
-                                                attrs="{'invisible': [('status', 'in', ['draft', 'completed']), ('assign_to', '=', False)]}"
+                                                attrs="{'invisible': ['|',('status', 'in', ['draft','completed']), ('assign_to', '=', False)]}"
 
                                         />
                                         <field name="status" widget="statusbar"/>
@@ -170,7 +174,7 @@
                                         </group>
                                         <group name="group-right">
                                             <field name="assign_to" required="1" 
-                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
                                             <field name="deadline" 
                                                 attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
 
@@ -178,9 +182,9 @@
                                         
                                     </group>   
                                     <div attrs="{'invisible': [('status', 'not in', ['completed'])]}">
-                                        <h3>
-                                            This task has been completed
-                                        </h3>
+                                        <h5>
+                                            Completed
+                                        </h5>
                                             
                                     </div>                                 
                                 </form>
@@ -195,7 +199,7 @@
                                     <field name="create_uid" string="Creator"/>
                                     <field name="create_date" string="Created By"/>
                                     <field name="assign_to" string="Assigned To" 
-                                    attrs="{'invisible': [('assign_to', '=', False)]}" />
+                                        attrs="{'invisible': [('assign_to', '=', False)]}" />
                                     
                                 </tree>
                             </field>
