@@ -6,15 +6,20 @@ class Task(models.Model):
     _description = "Task"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    title = fields.Char(required=True)
+    name = fields.Char(required=True)
     description = fields.Char(required=True)
-    type_id = fields.Many2one("onboarding_app.task.type", string="Type")
+    type_id = fields.Many2one(
+        "onboarding_app.task.type", string="Type", required=True, ondelete="cascade"
+    )
     job_position_id = fields.Many2one(
-        "onboarding_app.job.position", string="Job Position"
+        "onboarding_app.job.position",
+        string="Job Position",
+        required=True,
+        ondelete="cascade",
     )
     deadline = fields.Integer(string="Deadline(days)", required=True, tracking=True)
 
-    _sql_constraints = [("title_uniq", "UNIQUE (title)", "Task title must be unique")]
+    _sql_constraints = [("title_uniq", "UNIQUE (name)", "Task name must be unique")]
 
     @api.constrains("deadline")
     def _check_deadline(self):

@@ -5,4 +5,7 @@ class TaskType(models.Model):
     _name = "onboarding_app.task.type"
     _description = "Task Type"
 
-    title = fields.Char(required=True)
+    name = fields.Char(required=True)
+
+    def __str__(self):
+        return self.title

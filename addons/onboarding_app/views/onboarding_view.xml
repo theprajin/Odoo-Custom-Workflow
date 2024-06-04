@@ -60,7 +60,15 @@
                             <field name="name" />
                             <field name="email" />
                             <field name="phone" />
-                            <field name="address" />
+                            <label for="street" string="Address"/>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                                </div>
                         </group>
                         <group name="group_right">
                             <field name="department_id" />
@@ -143,14 +151,38 @@
                             attrs="{'invisible': [('state', 'not in', ['ongoing', 'email invited', 'confirm'])]}">
                             <field name="onboarding_task_list_id" >
                                 <form>
+                                    <field name="is_task_complete" invisible="1" />
+                                    <header>
+                                        <button name="btn_complete" string="Completed"
+                                                type="object" class="oe_highlight" title="Completed"
+                                                attrs="{'invisible': [('status', 'in', ['draft', 'completed']), ('assign_to', '=', False)]}"
+
+                                        />
+                                        <field name="status" widget="statusbar"/>
+                                    </header>
                                     <group name="group-top">
                                         <group name="group-left">
-                                            <field name="title" />
-                                            <field name="description" />
-                                            <field name="deadline" />
-                                            <field name="assign_to" required="1"/>
+                                            <field name="title" 
+                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                            <field name="description" 
+                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                            
                                         </group>
-                                    </group>                                    
+                                        <group name="group-right">
+                                            <field name="assign_to" required="1" 
+                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                            <field name="deadline" 
+                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+
+                                        </group>
+                                        
+                                    </group>   
+                                    <div attrs="{'invisible': [('status', 'not in', ['completed'])]}">
+                                        <h3>
+                                            This task has been completed
+                                        </h3>
+                                            
+                                    </div>                                 
                                 </form>
                                 <tree>
                                     <control>
@@ -159,6 +191,7 @@
                                     <field name="title" />
                                     <field name="description" />
                                     <field name="deadline" />
+                                    <field name="status"/>
                                     <field name="create_uid" string="Creator"/>
                                     <field name="create_date" string="Created By"/>
                                     <field name="assign_to" string="Assigned To" 
@@ -218,12 +251,13 @@
                 <sheet>
                     <group name="group_top">
                         <group name="group_left">
-                            <field name="title" required="1"></field>
+                            <field name="name" required="1"></field>
+                            <field name="type_id"/>
                             <field name="description"></field>
                         </group>
                         <group name="group_right">
                             <field name="deadline"></field>
-                            <!-- <field name="job_position_id" /> -->
+                            <field name="job_position_id" />
                         </group>
                     </group>
                 </sheet>
@@ -245,10 +279,12 @@
         <field name="model">onboarding_app.task</field>
         <field name="arch" type="xml" >
             <tree>
-                <field name="title"/>
-                <field name="description"/>
-                <!-- <field name="job_position_id"/> -->
-                <field name="deadline"/>
+                <field name="name"/>
+                <field name="type_id"/>
+                <field name="job_position_id"/>
+                <!-- <field name="deadline"/> -->
+                <field name="create_uid" string="Creator" />
+                <field name="create_date" string="Created On" />
                 
             </tree>
         </field>
@@ -270,6 +306,14 @@
                         </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"
+                        widget="mail_followers" />
+                    <field name="activity_ids"
+                        widget="mail_activity"/>
+                    <field name="message_ids"
+                        widget="mail_thread" />
+                </div>
             </form>
         </field>
     </record>
@@ -283,6 +327,8 @@
                 <field name="name"/>
                 <field name="description"/>
                 <field name="department_id"/>
+                <field name="create_uid" string="Creator"/>
+                <field name="create_date" string="Created By" />
             </tree>
         </field>
     </record>
@@ -295,11 +341,65 @@
         <field name="model">onboarding_app.task.type</field>
         <field name="arch" type="xml" >
             <tree>
-                <field name="title"/>
+                <field name="name"/>
+                <field name="create_uid" string="Creator"/>
+                <field name="create_date" string="Created By" />
             </tree>
+        </field>
+    </record> 
+
+    <!--Department list-->
+    <record id="view_tree_department" model="ir.ui.view" >
+        <field name="name">Department List</field>
+        <field name="model">onboarding_app.department</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="create_uid" string="Creator" />
+                <field name="create_date" />
+            </tree>
+        </field>
+
+    </record>
+
+
+    <!--Department form-->
+    <record id="view_form_department" model="ir.ui.view">
+        <field name="name">Department form</field>
+        <field name="model">onboarding_app.department</field>        
+        <field name="arch" type="xml">
+            
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids"
+                    widget="mail_followers" />
+                <field name="activity_ids"
+                    widget="mail_activity"/>
+                <field name="message_ids"
+                    widget="mail_thread" />
+            </div>
+            
+            </form>
         </field>
     </record>   
 
-    
-
 </odoo>
+
+
+<!-- <group string="Lead Information">
+    <label for="street_page_lead" string="Address"/>
+    <div class="o_address_format">
+        <field name="street" id="street_page_lead" placeholder="Street..." class="o_address_street"/>
+        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+        <field name="city" placeholder="City" class="o_address_city"/>
+        <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
+        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+    </div>
+    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'invisible': [('type', '=', 'lead')]}" />  
+</group> -->

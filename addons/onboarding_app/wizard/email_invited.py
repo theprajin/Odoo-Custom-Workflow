@@ -10,7 +10,7 @@ class EmailInvitedWizard(models.Model):
         "Email Invited",
         readonly=True,
         required=True,
-        ondelete="cascade"
+        ondelete="cascade",
     )
 
     @api.model
@@ -34,4 +34,7 @@ class EmailInvitedWizard(models.Model):
                 "onboarding_app.onboarding_stage_email_invited"
             )
             self.ongoing_id.sudo().write({"stage_id": email_invited.id})
+            # self.ongoing_id.onboarding_task_list_id.sudo().write(
+            #     {"status": "completed"}
+            # )
         print("Email Invited")

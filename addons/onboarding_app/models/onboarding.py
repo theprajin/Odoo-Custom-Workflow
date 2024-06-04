@@ -1,3 +1,4 @@
+from datetime import timedelta
 import re
 from odoo import models, fields, api, exceptions
 
@@ -53,6 +54,31 @@ class OnboardingTaskList(models.Model):
     description = fields.Char(required=True)
     deadline = fields.Date(string="Deadline(days)", default=fields.Date.today)
     assign_to = fields.Many2one("res.users", ondelete="cascade")
+    is_task_complete = fields.Boolean(string="Is Task Complete", default=False)
+    status = fields.Selection(
+        [
+            ("draft", "Draft"),
+            ("assigned", "Assigned"),
+            ("completed", "Completed"),
+        ],
+        default="draft",
+    )
+
+    @api.onchange("assign_to")
+    def _compute_task_status(self):
+        for task in self:
+            if task.assign_to and task.status != "completed":
+                task.status = "assigned"
+            elif not task.assign_to:
+                task.status = "draft"
+
+    def btn_complete(self):
+        for record in self:
+            record.status = "completed"
+            record.is_task_complete = True
+        return {
+            "type": "ir.actions.act_window_close",
+        }
 
 
 class Onboarding(models.Model):
@@ -64,7 +90,19 @@ class Onboarding(models.Model):
     name = fields.Char(required=True, tracking=True)
     email = fields.Char(required=True, tracking=True)
     phone = fields.Char(size=14, required=True, tracking=True)
-    address = fields.Char(required=True)
+    # Address Fields
+    street = fields.Char("Street", readonly=False)
+    street2 = fields.Char("Street", readonly=False)
+    zip = fields.Char("Zip", readonly=False)
+    city = fields.Char("City", readonly=False)
+    state_id = fields.Many2one(
+        "res.country.state",
+        string="State",
+        readonly=False,
+        domain="[('country_id', '=?', country_id)] ",
+    )
+    country_id = fields.Many2one("res.country", string="Country", readonly=False)
+
     department_id = fields.Many2one(
         "onboarding_app.department", string="Department", required=True, tracking=True
     )
@@ -87,6 +125,11 @@ class Onboarding(models.Model):
     experience = fields.Integer()
     website = fields.Char()
     age = fields.Integer()
+    task_completion_percentage = fields.Integer(
+        string="Task Completion %",
+        # compute="_compute_task_completion_percentage",
+        store=True,
+    )
 
     line_ids = fields.One2many(
         "onboarding_app.onboarding.line",
@@ -118,33 +161,6 @@ class Onboarding(models.Model):
         string="Onboarding Task List",
     )
 
-    _sql_constraints = [
-        (
-            "name_uniq",
-            "UNIQUE (email, phone)",
-            "Onboarding with this email and phone already exists",
-        ),
-    ]
-
-    @api.constrains("email")
-    def _check_email(self):
-        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
-        for record in self:
-            if not re.fullmatch(regex, record.email):
-                raise exceptions.ValidationError("Invalid Email")
-
-    @api.constrains("phone")
-    def _check_phone(self):
-        regex = "^\\+?[1-9][0-9]{7,14}$"
-        for record in self:
-            if not re.match(regex, record.phone):
-                raise exceptions.ValidationError("Invalid Phone Number")
-
-    @api.model
-    def _default_onboarding_stage_id(self):
-        Stage = self.env["onboarding_app.onboarding.stage"]
-        return Stage.search([("state", "=", "draft")], limit=1)
-
     stage_id = fields.Many2one(
         "onboarding_app.onboarding.stage",
         string="Stage",
@@ -153,22 +169,75 @@ class Onboarding(models.Model):
     )
     state = fields.Selection(related="stage_id.state", tracking=True)
 
+    _sql_constraints = [
+        (
+            "name_uniq",
+            "UNIQUE (email, phone)",
+            "Onboarding with this email and phone already exists",
+        ),
+    ]
+
+    @api.onchange("email")
+    def _check_email(self):
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
+        for record in self:
+            if record.email and not re.fullmatch(regex, record.email):
+                warning = {
+                    "title": "Invalid Email",
+                    "message": "The email address you entered is not valid",
+                }
+                # raise exceptions.ValidationError("Invalid Email")
+                return {"warning": warning}
+
+    @api.onchange("phone")
+    def _check_phone(self):
+        regex = "^\\+?[1-9][0-9]{7,14}$"
+        for record in self:
+            if record.phone and not re.match(regex, record.phone):
+                warning = {
+                    "title": "Invalid Phone",
+                    "message": "The phone number you entered is invalid",
+                }
+                # raise exceptions.ValidationError("Invalid Phone Number")
+                return {"warning": warning}
+
+    @api.model
+    def _default_onboarding_stage_id(self):
+        Stage = self.env["onboarding_app.onboarding.stage"]
+        return Stage.search([("state", "=", "draft")], limit=1)
+
     @api.model
     def _group_expand_stage_id(self, stages, domain, order):
         return stages.search(domain, order=order)
 
-    def populate_onboarding_task_list(self):
+    @api.onchange("department_id")
+    def _onchange_department_id(self):
+        self.job_position_id = False
+        return {
+            "domain": {
+                "job_position_id": [("department_id", "=", self.department_id.id)]
+            }
+        }
+
+    def populate_onboarding_task_list(
+        self,
+    ):  # call this for onchange in job position id
         print("here we are")
         tasks = self.env["onboarding_app.task"].search([])
+        self.onboarding_task_list_id = [(5, 0, 0)]
         task_list = [
             (
                 0,
                 0,
                 {
-                    "title": task.title,
+                    "title": task.name,
                     "description": task.description,
+                    "status": "draft",
                 },
             )
             for task in tasks
         ]
         self.onboarding_task_list_id = task_list
+
+
+# email, pdf
