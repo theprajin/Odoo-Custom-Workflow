@@ -93,6 +93,8 @@ class Onboarding(models.Model):
     title = fields.Char(required=True, tracking=True)
     name = fields.Char(required=True, tracking=True)
     email = fields.Char(required=True, tracking=True)
+    password = fields.Char()
+    new_password = fields.Char()
     phone = fields.Char(size=14, required=True, tracking=True)
     # Address Fields
     street = fields.Char("Street", readonly=False)
@@ -240,21 +242,8 @@ class Onboarding(models.Model):
     def populate_onboarding_task_list(self):
         # call this for onchange in job position id
         print("here we are")
-        tasks = self.env["onboarding_app.task"].search([])
+        tasks = self.env["onboarding_app.task"].search([()])
         self.onboarding_task_list_id = [(5, 0, 0)]
-        # task_list = [
-        #     (
-        #         0,
-        #         0,
-        #         {
-        #             "title": task.name,
-        #             "description": task.description,
-        #             "status": "draft",
-        #             "deadline": task.deadline,
-        #         },
-        #     )
-        #     for task in tasks
-        # ]
         task_list = []
         for task in tasks:
             deadline_date = date.today() + timedelta(task.deadline)

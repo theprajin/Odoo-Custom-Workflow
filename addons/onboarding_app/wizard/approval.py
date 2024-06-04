@@ -71,6 +71,8 @@ class AppprovalWizard(models.Model):
             {
                 "name": onboarding.name,
                 "login": onboarding.email,
+                "password": onboarding.password,
+                "new_password": onboarding.new_password,
                 "email": onboarding.email,
                 "phone": onboarding.phone,
             }
