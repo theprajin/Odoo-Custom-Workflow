@@ -33,8 +33,10 @@ class EmailInvitedWizard(models.Model):
             email_invited = self.env.ref(
                 "onboarding_app.onboarding_stage_email_invited"
             )
-            self.ongoing_id.sudo().write({"stage_id": email_invited.id})
             # self.ongoing_id.onboarding_task_list_id.sudo().write(
             #     {"status": "completed"}
             # )
+
+            self.ongoing_id.sudo().write({"stage_id": email_invited.id})
+
         print("Email Invited")

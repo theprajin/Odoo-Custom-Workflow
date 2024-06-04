@@ -230,8 +230,6 @@ class Onboarding(models.Model):
             completed_tasks = record.onboarding_task_list_id.filtered(
                 lambda task: task.status == "completed"
             )
-            print(f"completed task: {len(completed_tasks)}")
-            print(f"total task: {total_tasks}")
             if total_tasks > 0:
                 completion_percentage = (len(completed_tasks) / total_tasks) * 100
                 record.completed_task_count = int(completion_percentage)
@@ -239,9 +237,8 @@ class Onboarding(models.Model):
             else:
                 record.completed_task_count = 0
 
-    def populate_onboarding_task_list(
-        self,
-    ):  # call this for onchange in job position id
+    def populate_onboarding_task_list(self):
+        # call this for onchange in job position id
         print("here we are")
         tasks = self.env["onboarding_app.task"].search([])
         self.onboarding_task_list_id = [(5, 0, 0)]
@@ -275,6 +272,34 @@ class Onboarding(models.Model):
             )
 
         self.onboarding_task_list_id = task_list
+
+    def action_email_invite(self):
+        email_invited = self.env.ref("onboarding_app.onboarding_stage_email_invited")
+
+        # self.sudo().write({"stage_id": email_invited.id})
+
+        # self.write({"status": "email_invited"})
+        ctx = {
+            "default_model": "onboarding_app.onboarding",
+            "default_res_id": self.id,
+            "default_use_template": True,
+            "default_template_id": self.env.ref(
+                "onboarding_app.send_email_invitation_template"
+            ).id,
+            "default_composition_mode": "comment",
+            "mark_onboard_as_sent": True,  # use this context
+            "default_email_layout_xmlid": "mail.mail_notification_layout_with_responsible_signature",
+            "force_email": True,
+        }
+        return {
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": ctx,
+        }
 
 
 # email, pdf

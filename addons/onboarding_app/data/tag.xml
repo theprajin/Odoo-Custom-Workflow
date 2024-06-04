@@ -1,0 +1,33 @@
+<odoo>
+    <record id="onboarding_tag_1" model="onboarding_app.tag" >
+        <field name='name'>Python</field>
+    </record>
+    <record id="onboarding_tag_2" model="onboarding_app.tag" >
+        <field name='name'>Flutter</field>
+    </record>
+    <record id="onboarding_tag_3" model="onboarding_app.tag" >
+        <field name='name'>Project Management</field>
+    </record>
+    <record id="onboarding_tag_4" model="onboarding_app.tag" >
+        <field name='name'>Accounting</field>
+    </record>
+    <record id="onboarding_tag_5" model="onboarding_app.tag" >
+        <field name='name'>Odoo</field>
+    </record>
+    <record id="onboarding_tag_6" model="onboarding_app.tag" >
+        <field name='name'>Pytorch</field>
+    </record>
+    <record id="onboarding_tag_7" model="onboarding_app.tag" >
+        <field name='name'>Django</field>
+    </record>
+    <record id="onboarding_tag_8" model="onboarding_app.tag" >
+        <field name='name'>Provider</field>
+    </record>
+    <record id="onboarding_tag_9" model="onboarding_app.tag" >
+        <field name='name'>Riverpod</field>
+    </record>
+    <record id="onboarding_tag_10" model="onboarding_app.tag" >
+        <field name='name'>Bloc</field>
+    </record>
+    
+</odoo>

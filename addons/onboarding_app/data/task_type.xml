@@ -1,0 +1,6 @@
+<odoo>
+    <record id="onboarding_task_type_1" model="onboarding_app.task.type" >
+        <field name='name'>Account Creation</field>
+    </record>
+    
+</odoo>

@@ -1,0 +1,26 @@
+<odoo>
+    <record id="onboarding_job_position_1" model="onboarding_app.job.position" >
+        <field name='name'>Python Developer</field>
+        <field name="description">This is for python developer position</field>
+        <field name="department_id" ref="onboarding_department_1" />
+    </record>
+
+    <record id="onboarding_job_position_2" model="onboarding_app.job.position" >
+        <field name='name'>Flutter Developer</field>
+        <field name="description">This is for flutter developer position</field>
+        <field name="department_id" ref="onboarding_department_1" />
+    </record>
+
+    <record id="onboarding_job_position_3" model="onboarding_app.job.position" >
+        <field name='name'>Project Manager</field>
+        <field name="description">This is for project manager position</field>
+        <field name="department_id" ref="onboarding_department_2" />
+    </record>
+
+    <record id="onboarding_job_position_4" model="onboarding_app.job.position" >
+        <field name='name'>Accounting Officer</field>
+        <field name="description">This is for accounting officer position</field>
+        <field name="department_id" ref="onboarding_department_3" />
+    </record>
+    
+</odoo>

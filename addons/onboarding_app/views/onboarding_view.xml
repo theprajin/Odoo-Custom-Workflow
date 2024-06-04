@@ -36,8 +36,8 @@
                         class="oe_highlight"
                     />
                     <button 
-                        name="%(action_email_invited_wizard)d"
-                        type="action"
+                        name="action_email_invite"
+                        type="object"
                         string="Send Email Invitation"
                         attrs="{'invisible': ['|',('state','not in', ['ongoing']),('completed_task_count', '&lt;', 100)]}"
                         class="oe_highlight"
@@ -59,6 +59,7 @@
                     </div>
                     <group name="group_top"> 
                         <group name="group_left" >
+                            <!-- <field name="stage_id" /> -->
                             <field name="name" />
                             <field name="email" />
                             <field name="phone" />
@@ -393,17 +394,3 @@
     </record>   
 
 </odoo>
-
-
-<!-- <group string="Lead Information">
-    <label for="street_page_lead" string="Address"/>
-    <div class="o_address_format">
-        <field name="street" id="street_page_lead" placeholder="Street..." class="o_address_street"/>
-        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
-        <field name="city" placeholder="City" class="o_address_city"/>
-        <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
-        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
-        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
-    </div>
-    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'invisible': [('type', '=', 'lead')]}" />  
-</group> -->

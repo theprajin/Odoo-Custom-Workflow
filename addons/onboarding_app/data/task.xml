@@ -1,0 +1,51 @@
+<odoo>
+    <record id="onboarding_task_1" model="onboarding_app.task" >
+        <field name='name'>Email Creation for python developer</field>
+        <field name="description">Create email</field>
+        <field name="type_id" ref="onboarding_task_type_1" />
+        <field name="job_position_id" ref="onboarding_job_position_1"/>
+        <field name="deadline">1</field>
+    </record>
+    <record id="onboarding_task_2" model="onboarding_app.task" >
+        <field name='name'>Gitlab Account Creation for python developer</field>
+        <field name="description">Create gitlab account</field>
+        <field name="type_id" ref="onboarding_task_type_1" />
+        <field name="job_position_id" ref="onboarding_job_position_1"/>
+        <field name="deadline">1</field>
+    </record>
+
+    <record id="onboarding_task_3" model="onboarding_app.task" >
+        <field name='name'>Email Creation for flutter developer</field>
+        <field name="description">Create email</field>
+        <field name="type_id" ref="onboarding_task_type_1" />
+        <field name="job_position_id" ref="onboarding_job_position_2"/>
+        <field name="deadline">1</field>
+    </record>
+    <record id="onboarding_task_4" model="onboarding_app.task" >
+        <field name='name'>Gitlab Account Creation for flutter developer</field>
+        <field name="description">Create gitlab account</field>
+        <field name="type_id" ref="onboarding_task_type_1" />
+        <field name="job_position_id" ref="onboarding_job_position_2"/>
+        <field name="deadline">1</field>
+    </record>
+
+    <record id="onboarding_task_5" model="onboarding_app.task" >
+        <field name='name'>Email Creation for project manager</field>
+        <field name="description">Create email</field>
+        <field name="type_id" ref="onboarding_task_type_1" />
+        <field name="job_position_id" ref="onboarding_job_position_3"/>
+        <field name="deadline">1</field>
+    </record>
+ 
+
+    <record id="onboarding_task_6" model="onboarding_app.task" >
+        <field name='name'>Email Creation for accounting officer</field>
+        <field name="description">Create email</field>
+        <field name="type_id" ref="onboarding_task_type_1" />
+        <field name="job_position_id" ref="onboarding_job_position_4"/>
+        <field name="deadline">1</field>
+    </record>
+  
+    
+    
+</odoo>

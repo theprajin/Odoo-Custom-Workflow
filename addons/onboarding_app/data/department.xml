@@ -1,0 +1,11 @@
+<odoo>
+    <record id="onboarding_department_1" model="onboarding_app.department" >
+        <field name='name'>Development</field>
+    </record>
+    <record id="onboarding_department_2" model="onboarding_app.department" >
+        <field name='name'>Management</field>
+    </record>
+    <record id="onboarding_department_3" model="onboarding_app.department" >
+        <field name='name'>Administration</field>
+    </record>
+</odoo>
