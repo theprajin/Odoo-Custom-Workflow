@@ -1,7 +1,7 @@
 from odoo import api, exceptions, fields, models
 
 
-class EmailInvitedWizard(models.Model):
+class EmailInvitedWizard(models.TransientModel):
     _name = "onboarding_app.onboarding.email.invited.wizard"
     _description = "Email Invited Wizard"
 

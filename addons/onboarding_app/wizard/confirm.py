@@ -1,7 +1,7 @@
 from odoo import api, exceptions, fields, models
 
 
-class ConfirmWizard(models.Model):
+class ConfirmWizard(models.TransientModel):
     _name = "onboarding_app.onboarding.confirm.wizard"
     _description = "Confirm wizard"
 

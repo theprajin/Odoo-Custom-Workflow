@@ -15,7 +15,7 @@
     <!-- activities -->
     <record id="action_onboarding_activities" model="ir.actions.act_window">
         <field name="name">Activities</field>
-        <field name="res_model">onboarding_app.task</field>
+        <field name="res_model">onboarding_app.onboarding.task.list</field>
         <field name="view_mode">tree,form</field>
     </record>
 

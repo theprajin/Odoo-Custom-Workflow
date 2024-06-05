@@ -1,5 +1,7 @@
 from datetime import timedelta, date
 import re
+import random
+import string
 from odoo import models, fields, api, exceptions
 
 
@@ -8,11 +10,12 @@ class OnboardingLine(models.Model):
     _description = "Onboarding Line"
 
     onboarding_id = fields.Many2one(
-        "onboarding_app.onboarding", required=True, ondelete="cascade"
+        "onboarding_app.onboarding",
+        required=True,
+        ondelete="cascade",
     )
+
     remark = fields.Char("Remark")
-    created_by = fields.Char("Created By")
-    created_on = fields.Char("Created On")
 
 
 class ApprovalLine(models.Model):
@@ -30,9 +33,12 @@ class DocumentLine(models.Model):
     _description = "Document Line"
 
     document_line_id = fields.Many2one(
-        "onboarding_app.onboarding", required=True, ondelete="cascade"
+        "onboarding_app.onboarding",
+        required=True,
+        ondelete="cascade",
     )
-    document = fields.Char("Documents")
+
+    document = fields.Binary(string="Document")
 
 
 class ExtraInformationLine(models.Model):
@@ -45,10 +51,31 @@ class ExtraInformationLine(models.Model):
     extra_information = fields.Char("Extra Information")
 
 
+class OnboardingTaskListRemarkLine(models.Model):
+    _name = "onboarding_app.onboarding.task.remark"
+    _description = "Onboarding Task List Remark"
+
+    onboarding_task_list_id = fields.Many2one(
+        "onboarding_app.onboarding.task.list", required=True, ondelete="cascade"
+    )
+    remark = fields.Char("Approval Remark")
+
+
+class OnboardingTaskListDocumentLine(models.Model):
+    _name = "onboarding_app.onboarding.task.document"
+    _description = "Onboarding Task List Document"
+
+    onboarding_task_list_id = fields.Many2one(
+        "onboarding_app.onboarding.task.list", required=True, ondelete="cascade"
+    )
+    document = fields.Binary(string="Document")
+
+
 class OnboardingTaskList(models.Model):
     _name = "onboarding_app.onboarding.task.list"
     _description = "Onboarding Task List"
 
+    name = fields.Char(string="Name", required=True)
     onboarding_id = fields.Many2one("onboarding_app.onboarding", ondelete="cascade")
     title = fields.Char(required=True)
     description = fields.Char(required=True)
@@ -62,6 +89,18 @@ class OnboardingTaskList(models.Model):
             ("completed", "Completed"),
         ],
         default="draft",
+    )
+
+    remark_line_id = fields.One2many(
+        "onboarding_app.onboarding.task.remark",
+        "onboarding_task_list_id",
+        string="Remarks",
+    )
+
+    document_line_id = fields.One2many(
+        "onboarding_app.onboarding.task.document",
+        "onboarding_task_list_id",
+        string="Document",
     )
 
     @api.onchange("assign_to")
@@ -93,8 +132,7 @@ class Onboarding(models.Model):
     title = fields.Char(required=True, tracking=True)
     name = fields.Char(required=True, tracking=True)
     email = fields.Char(required=True, tracking=True)
-    password = fields.Char()
-    new_password = fields.Char()
+    password1 = fields.Char()
     phone = fields.Char(size=14, required=True, tracking=True)
     # Address Fields
     street = fields.Char("Street", readonly=False)
@@ -136,6 +174,8 @@ class Onboarding(models.Model):
         compute="_compute_completed_task_count",
         store=True,
     )
+
+    is_email_sent = fields.Boolean(default=False)
 
     line_ids = fields.One2many(
         "onboarding_app.onboarding.line",
@@ -235,39 +275,60 @@ class Onboarding(models.Model):
             if total_tasks > 0:
                 completion_percentage = (len(completed_tasks) / total_tasks) * 100
                 record.completed_task_count = int(completion_percentage)
-                print(completion_percentage)
+                # print(completion_percentage)
             else:
                 record.completed_task_count = 0
 
     def populate_onboarding_task_list(self):
         # call this for onchange in job position id
-        print("here we are")
-        tasks = self.env["onboarding_app.task"].search([()])
-        self.onboarding_task_list_id = [(5, 0, 0)]
-        task_list = []
-        for task in tasks:
-            deadline_date = date.today() + timedelta(task.deadline)
-            task_list.append(
-                (
-                    0,
-                    0,
-                    {
-                        "title": task.name,
-                        "description": task.description,
-                        "status": "draft",
-                        "deadline": deadline_date,
-                    },
+        for onboarding in self:
+            job_position_id = onboarding.job_position_id.id
+            if job_position_id:
+                tasks = self.env["onboarding_app.task"].search(
+                    [("job_position_id", "=", job_position_id)]
                 )
-            )
+                self.onboarding_task_list_id = [(5, 0, 0)]
+                task_list = []
+                for task in tasks:
+                    deadline_date = date.today() + timedelta(task.deadline)
+                    task_list.append(
+                        (
+                            0,
+                            0,
+                            {
+                                "title": task.name,
+                                "description": task.description,
+                                "status": "draft",
+                                "deadline": deadline_date,
+                            },
+                        )
+                    )
 
-        self.onboarding_task_list_id = task_list
+                self.onboarding_task_list_id = task_list
 
+    # genenrate random text of 6 characters for password
+    # @api.depends()
+    def generate_random_text(self, length=6):
+        # letters = string.ascii_letters + string.digits
+        # for record in self:
+        #     record.password = "".join(random.choice(letters) for i in range(length))
+        letters = string.ascii_letters + string.digits
+        return "".join(random.choice(letters) for i in range(length))
+
+    # set user password
+    def set_user_password(self):
+        self.ensure_one()
+
+        # self.user_id.sudo().write({"password": self.generate_random_text()})
+        self.password1 = self.generate_random_text()
+        # self.user_id.new_password = self.password1
+        # self.user_id._cr.commit()
+        self.user_id.sudo().write({"new_password": self.password1})
+
+    # btn for email invitation
     def action_email_invite(self):
         email_invited = self.env.ref("onboarding_app.onboarding_stage_email_invited")
 
-        # self.sudo().write({"stage_id": email_invited.id})
-
-        # self.write({"status": "email_invited"})
         ctx = {
             "default_model": "onboarding_app.onboarding",
             "default_res_id": self.id,

@@ -1,7 +1,7 @@
 from odoo import api, exceptions, fields, models
 
 
-class OngoingWizard(models.Model):
+class OngoingWizard(models.TransientModel):
     _name = "onboarding_app.onboarding.ongoing.wizard"
     _description = "Ongoing wizard"
 
@@ -31,7 +31,10 @@ class OngoingWizard(models.Model):
     def action_confirm(self):
         if self.approval_id:
             ongoing = self.env.ref("onboarding_app.onboarding_stage_ongoing")
+            print(self.approval_id.user_id)
+            print(self.approval_id.user_id.password)
+            print(self.approval_id.user_id.new_password)
             self.approval_id.sudo().write({"stage_id": ongoing.id})
             self.approval_id.populate_onboarding_task_list()
 
-        print("Ongoing")
+        # print("Ongoing")

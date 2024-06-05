@@ -16,9 +16,9 @@
                 <ul>
 
                     <t t-set="website_url" t-value="object.get_base_url()"></t>
-                    <li><t t-out="website_url"></t></li>
+                    <li><strong>URL Link</strong><span><t t-out="website_url"></t></span></li>
                     <li><strong>Email: </strong> <span> <t t-out="object.email"/></span> </li>
-                    <li><strong>Password: </strong> </li>
+                    <li><strong>Password: </strong> <span><t t-out="object.password1"/></span> </li>
                 </ul>
                 <br/>
                 <p>You can login and change the password.</p>

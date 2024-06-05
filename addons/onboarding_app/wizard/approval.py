@@ -1,7 +1,7 @@
 from odoo import api, exceptions, fields, models
 
 
-class AppprovalWizard(models.Model):
+class AppprovalWizard(models.TransientModel):
     _name = "onboarding_app.onboarding.approval.wizard"
     _description = "Approval wizard"
 
@@ -67,13 +67,31 @@ class AppprovalWizard(models.Model):
 
     def approved_user_creation(self):
         onboarding = self.sent_to_approval_id
-        self.env["res.users"].with_context(no_invite_email=True).create(
-            {
-                "name": onboarding.name,
-                "login": onboarding.email,
-                "password": onboarding.password,
-                "new_password": onboarding.new_password,
-                "email": onboarding.email,
-                "phone": onboarding.phone,
-            }
+        user = (
+            self.env["res.users"]
+            .with_context(no_invite_email=True)
+            .create(
+                {
+                    "name": onboarding.name,
+                    "login": onboarding.email,
+                    "email": onboarding.email,
+                    "phone": onboarding.phone,
+                }
+            )
         )
+
+        if not user:
+            raise exceptions.UserError("User creation failed.")
+
+        # password = onboarding.generate_random_text()
+        # user.sudo()._change_password(password)
+        # user._cr.commit()
+
+        # user.write({"password": password})
+        onboarding.user_id = user.id
+        onboarding.set_user_password()
+
+        # print(f"generated password: {password}")
+        print(f"user id: {onboarding.user_id}")
+        print(f"name : {onboarding.user_id.name}")
+        print(f"password : {onboarding.user_id.password}")

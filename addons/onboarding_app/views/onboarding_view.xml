@@ -9,6 +9,7 @@
                 <header>
                     <field name="state" invisible="1"/>
                     <field name="completed_task_count" invisible="1"/>
+                    <field name="is_email_sent" invisible="1"/>
                     
                     <button name="%(action_send_to_ongoing_wizard)d"
                         string="Send For Approval"
@@ -31,7 +32,7 @@
                     <button 
                         name="%(action_ongoing_wizard)d"
                         type="action"
-                        string="Sent To Ongoing"
+                        string="Send To Ongoing"
                         attrs="{'invisible': [('state','not in', ['approved'])]}"
                         class="oe_highlight"
                     />
@@ -39,7 +40,7 @@
                         name="action_email_invite"
                         type="object"
                         string="Send Email Invitation"
-                        attrs="{'invisible': ['|',('state','not in', ['ongoing']),('completed_task_count', '&lt;', 100)]}"
+                        attrs="{'invisible': ['|',('is_email_sent', '=', True),'|',('state','not in', ['ongoing']),('completed_task_count', '&lt;', 100)]}"
                         class="oe_highlight"
                     />
                     <button 
@@ -82,7 +83,7 @@
                     <notebook>
                         <page string="Remarks">
                             <field name="line_ids">
-                                <form string="Create Remarks" delete="0">
+                                <form string="Create Remarks">
                                     <group>
                                         <field name="remark" />
                                     </group>
@@ -165,29 +166,68 @@
                                         />
                                         <field name="status" widget="statusbar"/>
                                     </header>
+                                    <sheet>
+
+                                    
                                     <group name="group-top">
                                         <group name="group-left">
                                             <field name="title" 
-                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
                                             <field name="description" 
-                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
                                             
                                         </group>
                                         <group name="group-right">
                                             <field name="assign_to" required="1" 
                                                 attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
                                             <field name="deadline" 
-                                                attrs="{'readonly': [('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
 
                                         </group>
                                         
                                     </group>   
-                                    <div attrs="{'invisible': [('status', 'not in', ['completed'])]}">
+                                    <!-- <div attrs="{'invisible': [('status', 'not in', ['completed'])]}">
                                         <h5>
                                             Completed
                                         </h5>
                                             
-                                    </div>                                 
+                                    </div>-->
+                                    <notebook>
+                                        <page string="Remarks">
+                                            <field name="remark_line_id">
+                                                <form string="Create Remarks">
+                                                    <group>
+                                                        <field name="remark" />
+                                                    </group>
+                                                </form>
+                                                    <tree string="Remarks">
+                                                        <control>
+                                                            <create string="Add Remark" />
+                                                        </control>
+                                                        <field name="remark" />
+                                                        <field name="create_uid" string="Creator"/>
+                                                        <field name="create_date" string="Created On"/>
+                                                    </tree>
+                                            </field>
+                                        </page>
+                                        <page string="Documents">
+                                            <field name="document_line_id">
+                                                <form>
+                                                    <group>
+                
+                                                        <field name="document" />
+                                                    </group>
+                                                </form>
+                                                <tree>
+                                                    <control>
+                                                        <create string="Add Document" />
+                                                    </control>
+                                                    <field name="document" />
+                                                </tree>
+                                            </field>
+                                        </page>
+                                    </notebook>
+                                </sheet>
                                 </form>
                                 <tree>
                                     <control>
@@ -201,7 +241,6 @@
                                     <field name="create_date" string="Created By"/>
                                     <field name="assign_to" string="Assigned To" 
                                         attrs="{'invisible': [('assign_to', '=', False)]}" />
-                                    
                                 </tree>
                             </field>
                         </page>                        
@@ -391,6 +430,22 @@
             
             </form>
         </field>
-    </record>   
+    </record>
+    
+    <!--Activities list-->
+    <record id="view_tree_department" model="ir.ui.view" >
+        <field name="name">Activities List</field>
+        <field name="model">onboarding_app.onboarding.task.list</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="title" />
+                <field name="deadline" />
+                <field name="assign_to" />
+                <field name="create_uid" string="Creator" />
+                <field name="create_date" />
+            </tree>
+        </field>
+
+    </record>
 
 </odoo>
