@@ -17,6 +17,7 @@
         <field name="name">Activities</field>
         <field name="res_model">onboarding_app.onboarding.task.list</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('status', '=', 'assigned')]</field>
     </record>
 
 

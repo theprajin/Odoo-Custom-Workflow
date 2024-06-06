@@ -1,0 +1,128 @@
+<odoo>
+    <record id="paperformat_euro_landscape" model="report.paperformat">
+        <field name="name">A4 Landscape</field>
+        <field name="format">A4</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">32</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+      </record>
+
+    <record id="action_onboarding_report" model="ir.actions.report">
+        <field name="name">Onboarding Report</field>
+        <field name="model">onboarding_app.onboarding</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">onboarding_app.report_onboarding_app_onboarding</field>
+        <field name="binding_model_id" ref="model_onboarding_app_onboarding"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id"
+                ref="paperformat_euro_landscape" />
+    </record>
+
+    <template id="report_onboarding_app_onboarding">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <h2 align="center">Onboarding Report</h2>
+                        <div class="oe_structure"/>
+                        <div class="container">
+                            <div class="row bg-primary">
+                                <p class="col-3"><b>Title: </b><span t-field="o.title" /> </p>
+                                <br/>
+                                <div class="col-2"><b>Email: </b><span t-field="o.email" /></div>
+                                <br/>
+                                <div class="col-2"><b>Department: </b><span t-field="o.department_id.name" /></div>
+                                <br/>
+                                <div class="col-2"><b>Job Position: </b><span t-field="o.job_position_id.name" /></div>
+                                <br/>
+                                <div class="col-2"><b>Creator: </b><span t-field="o.create_uid.name" /></div>
+                                <br/>
+                                <div class="col-3"><b>Created By: </b><span t-field="o.title" /></div>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            <!-- <t t-foreach="docs" t-as="o">
+                                <div class="row">
+                                
+                                    <div class="col-3">
+                                        <h4><span t-field="o.title"/></h4>
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="o.email"/>
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="o.department_id.name"/>
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="o.job_position_id.name"/>
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="o.create_uid.name"/>
+                                    </div>
+                                    <div class="col-3">
+                                        <span t-field="o.create_date" t-options="{'widget': 'date'}"/>
+                                    </div>
+                                </div>
+                            </t> -->
+
+                            <table class="table table-condensed" style="border: 2px solid black !important;">
+                                <thead>
+                                    <tr>
+                                        <th name="th_title" class="text-left">
+                                            <span>Title</span>
+                                        </th>
+                                        <th name="th_name" class="text-left">
+                                            <span>Deadline</span>
+                                        </th>
+                                        <th name="th_email" class="text-left">
+                                            <span>Assigned To</span>
+                                        </th>
+                                        <th name="th_status" class="text-left">
+                                            <span>Status</span>
+                                        </th>
+                                        <th name="th_created" class="text-left">
+                                            <span>Creator</span>
+                                        </th>
+                                        <th name="th_createdon" class="text-left">
+                                            <span>Created On</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="o.onboarding_task_list_id" t-as="onboard">
+                                    <tr>
+                                        <td>
+                                            <t t-out="onboard.title"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="onboard.deadline"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="onboard.assign_to.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="onboard.status"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="onboard.create_uid.name"/>
+                                        </td>
+                                        <td>
+                                          <t t-out="onboard.create_date.strftime('%Y-%m-%d %H:%M')"/>
+
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                                
+                            
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

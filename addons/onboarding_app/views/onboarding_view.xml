@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Onboarding form-->
     <record id="view_form_onboarding" model="ir.ui.view">
@@ -119,16 +118,26 @@
                         <page string="Documents">
                             <field name="document_line_id">
                                 <form>
-                                    <group>
-
-                                        <field name="document" />
+                                    <group name="group-top">
+                                        <group name="group-left">
+                                            <field name="name" />
+                                            <field name="document" filename="document_filename"/>
+                                            <field name="document_filename" invisible="1" />
+                    
+                                        </group>
+                                        <group name="group-right">
+                                            <field name="document_number" />
+                                            <field name="description" />
+                    
+                                        </group>
                                     </group>
+                    
                                 </form>
                                 <tree>
                                     <control>
                                         <create string="Add Document" />
                                     </control>
-                                    <field name="document" />
+                                    <field name="name" />
                                 </tree>
                             </field>
                         </page>
@@ -213,16 +222,26 @@
                                         <page string="Documents">
                                             <field name="document_line_id">
                                                 <form>
-                                                    <group>
-                
-                                                        <field name="document" />
+                                                    <group name="group-top">
+                                                        <group name="group-left">
+                                                            <field name="name" />
+                                                            <field name="document" filename="document_filename"/>
+                                                            <field name="document_filename" invisible="1" />
+                                    
+                                                        </group>
+                                                        <group name="group-right">
+                                                            <field name="document_number" />
+                                                            <field name="description" />
+                                    
+                                                        </group>
                                                     </group>
+                                    
                                                 </form>
                                                 <tree>
                                                     <control>
                                                         <create string="Add Document" />
                                                     </control>
-                                                    <field name="document" />
+                                                    <field name="name" />
                                                 </tree>
                                             </field>
                                         </page>
@@ -289,7 +308,7 @@
     <!--task form-->
     <record id="view_form_task" model="ir.ui.view">
         <field name="name">Task Form</field>
-        <field name="model" >onboarding_app.task</field>
+        <field name="model">onboarding_app.task</field>
         <field name="arch" type="xml" >
             <form>
                 <sheet>
@@ -433,19 +452,15 @@
     </record>
     
     <!--Activities list-->
-    <record id="view_tree_department" model="ir.ui.view" >
+    <record id="view_tree_activities" model="ir.ui.view" >
         <field name="name">Activities List</field>
         <field name="model">onboarding_app.onboarding.task.list</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree >
                 <field name="title" />
                 <field name="deadline" />
-                <field name="assign_to" />
-                <field name="create_uid" string="Creator" />
-                <field name="create_date" />
+                <field name="status" />
             </tree>
         </field>
-
     </record>
-
 </odoo>

@@ -38,7 +38,11 @@ class DocumentLine(models.Model):
         ondelete="cascade",
     )
 
-    document = fields.Binary(string="Document")
+    document = fields.Binary(string="Document", store=True, required=True)
+    name = fields.Char("Name", required=True)
+    document_number = fields.Char("Document Number")
+    document_filename = fields.Char("Document Filename", store=True)
+    description = fields.Char("Description")
 
 
 class ExtraInformationLine(models.Model):
@@ -69,13 +73,16 @@ class OnboardingTaskListDocumentLine(models.Model):
         "onboarding_app.onboarding.task.list", required=True, ondelete="cascade"
     )
     document = fields.Binary(string="Document")
+    name = fields.Char("Name", required=True)
+    document_number = fields.Char("Document Number")
+    document_filename = fields.Char("Document Filename", store=True)
+    description = fields.Char("Description")
 
 
 class OnboardingTaskList(models.Model):
     _name = "onboarding_app.onboarding.task.list"
     _description = "Onboarding Task List"
 
-    name = fields.Char(string="Name", required=True)
     onboarding_id = fields.Many2one("onboarding_app.onboarding", ondelete="cascade")
     title = fields.Char(required=True)
     description = fields.Char(required=True)

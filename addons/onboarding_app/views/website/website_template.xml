@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="home" name="Onboarding">
+        <t t-call="website.layout">
+            <!--Add page elements here-->
+            <div class="oe_structure">
+                <section class="pt32 pb32 bg-secondary oe_custom_bg">
+
+                    <div class="container text-center">
+                        <h1>
+                            Editable text and supports drag and drop.
+                        </h1>
+                    </div> 
+                </section>
+            </div>
+
+            <div class="container">
+                <t t-foreach="onboardings" t-as="o">
+                    <div ></div>
+                </t>
+
+            </div>
+        </t>       
+        
+    </template>   
+
+</odoo>
