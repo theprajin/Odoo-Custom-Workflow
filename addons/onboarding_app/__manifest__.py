@@ -24,4 +24,9 @@
         "views/website/website_template.xml",
         "reports/onboarding_report.xml",
     ],
+    "assets": {
+        "web.assets_common": {
+            "/onboarding_app/static/description/onboarding.png",
+        },
+    },
 }

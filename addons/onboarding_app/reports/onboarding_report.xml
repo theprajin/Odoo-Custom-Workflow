@@ -41,7 +41,7 @@
                                 <br/>
                                 <div class="col-2"><b>Creator: </b><span t-field="o.create_uid.name" /></div>
                                 <br/>
-                                <div class="col-3"><b>Created By: </b><span t-field="o.title" /></div>
+                                <div class="col-3"><b>Created On: </b><span t-field="o.create_date" /></div>
                                 <br/>
                                 <br/>
                             </div>

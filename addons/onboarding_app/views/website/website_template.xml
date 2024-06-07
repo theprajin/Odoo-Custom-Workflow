@@ -8,16 +8,57 @@
 
                     <div class="container text-center">
                         <h1>
-                            Editable text and supports drag and drop.
+                            Welcome to Onboarding Worflow System
                         </h1>
                     </div> 
                 </section>
             </div>
 
             <div class="container">
-                <t t-foreach="onboardings" t-as="o">
+                <!-- <t t-foreach="onboardings" t-as="o">
                     <div ></div>
-                </t>
+                </t> -->
+                <div class="row">
+                    <h4 class="mt-5 text-center">Onboarding List</h4>
+                    <div class="col-md-12">
+                
+                        <table class="table table-success table-striped table-hover my-5">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>S.N.</th>
+                                    <th>Title</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Gender</th>
+                                    <th>Department</th>
+                                    <th>Created By</th>
+                                    <th>Created On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="1"/>
+                                <t t-foreach="onboardings" t-as="o">
+                                    <tr>
+                                        <td><t t-out="counter"/></td>
+                                        <td><t t-out="o.title"/></td>
+                                        <td><t t-out="o.phone"/></td>
+                                        <td><t t-out="o.email"/></td>
+                                        <td><t t-out="o.gender"/></td>
+                                        <td><t t-out="o.department_id.name"/></td>
+                                        <td><t t-out="o.create_uid.name"/></td>
+                                        <td><t t-out="o.create_date.strftime('%Y-%m-%d %H:%M')"/></td>
+                                    </tr>
+                                    <t t-set="counter" t-value="counter + 1"/>
+                                </t>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-md-12 my-5">
+                        <img src="/onboarding_app/static/images/onboarding.png"  class="img-fluid" alt="Onboarding Image"  style="border: 2px solid red; border-radius: 10px; height:70%;width:100%;object-fit:cover;"/>
+                    </div>
+                   
+                </div>
 
             </div>
         </t>       
