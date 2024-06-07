@@ -25,3 +25,16 @@ class Main(http.Controller):
             )
 
             return res
+
+    class OnboardingTaskListController(http.Controller):
+
+        @http.route("/tasks", type="http", auth="public", website=True)
+        def onboarding_list(self):
+            onboarding_list = http.request.env["onboarding_app.onboarding.task.list"]
+            task_list = onboarding_list.sudo().search([])
+            res = http.request.render(
+                "onboarding_app.tasks",
+                {"tasks": task_list},
+            )
+
+            return res

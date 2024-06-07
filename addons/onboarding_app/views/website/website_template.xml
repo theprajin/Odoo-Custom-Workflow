@@ -7,6 +7,13 @@
             <field name="parent_id" ref="website.main_menu" />
             <field name="sequence">60</field>
         </record>
+        <record id="menu_onboarding_tasks" model="website.menu">
+            <field name="name">Tasks</field>
+            <field name="url">/tasks</field>
+            <field name="parent_id" ref="website.main_menu" />
+            <field name="sequence">70</field>
+
+        </record>
 
         <template id="home" name="Onboarding">
             <t t-call="website.layout">
@@ -109,6 +116,49 @@
                    </table>
                </div>
            </t>
-       </template>
+        </template>
+
+        <template id="tasks" name="Tasks">
+            <title>odoo-tasks</title>
+           <t t-call="website.layout">
+               <div class="container">
+                   <h4 class='mt-5 text-center'>Task List</h4>
+                   <table class="table table-success table-striped table-hover my-5">
+                       <thead class="table-dark">
+                           <tr>
+                              <th>S.N.</th>
+                               <th>Title</th>
+                               <th>Deadline</th>
+                               <th>Status</th>
+                               <th>Created On</th>
+                            
+                           </tr>
+                       </thead>
+                       <tbody>
+                        <t t-set="counter" t-value="1"/>
+                           <t t-foreach="tasks" t-as="task">
+                               <tr>
+                                    <td><t t-out="counter"/></td>
+                                   <td>
+                                       <t t-out="task.title"/>
+                                   </td>
+                                   <td>
+                                       <t t-out="task.deadline"/>
+                                   </td>
+                                   <td>
+                                    <t t-out="task.status"/>
+                                    </td>
+                                   <td>
+                                       <t t-out="task.create_date.strftime('%Y-%m-%d %H:%M')"/>
+                                   </td>
+
+                               </tr>
+                                <t t-set="counter" t-value="counter + 1"/>
+                           </t>
+                       </tbody>
+                   </table>
+               </div>
+           </t>
+        </template>
 </data>
 </odoo>
