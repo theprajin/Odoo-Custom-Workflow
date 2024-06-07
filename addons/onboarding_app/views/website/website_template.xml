@@ -1,68 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="home" name="Onboarding">
-        <t t-call="website.layout">
-            <!--Add page elements here-->
-            <div class="oe_structure">
-                <section class="pt32 pb32 bg-secondary oe_custom_bg">
+    <data>
+        <record id="menu_onboarding_user" model="website.menu">
+            <field name="name">User</field>
+            <field name="url">/users</field>
+            <field name="parent_id" ref="website.main_menu" />
+            <field name="sequence">60</field>
+        </record>
 
-                    <div class="container text-center">
-                        <h1>
-                            Welcome to Onboarding Worflow System
-                        </h1>
-                    </div> 
-                </section>
-            </div>
+        <template id="home" name="Onboarding">
+            <t t-call="website.layout">
+                <!--Add page elements here-->
+                <div class="oe_structure">
+                    <section class="pt32 pb32 bg-secondary oe_custom_bg">
 
-            <div class="container">
-                <!-- <t t-foreach="onboardings" t-as="o">
-                    <div ></div>
-                </t> -->
-                <div class="row">
-                    <h4 class="mt-5 text-center">Onboarding List</h4>
-                    <div class="col-md-12">
-                
-                        <table class="table table-success table-striped table-hover my-5">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>S.N.</th>
-                                    <th>Title</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Gender</th>
-                                    <th>Department</th>
-                                    <th>Created By</th>
-                                    <th>Created On</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-set="counter" t-value="1"/>
-                                <t t-foreach="onboardings" t-as="o">
-                                    <tr>
-                                        <td><t t-out="counter"/></td>
-                                        <td><t t-out="o.title"/></td>
-                                        <td><t t-out="o.phone"/></td>
-                                        <td><t t-out="o.email"/></td>
-                                        <td><t t-out="o.gender"/></td>
-                                        <td><t t-out="o.department_id.name"/></td>
-                                        <td><t t-out="o.create_uid.name"/></td>
-                                        <td><t t-out="o.create_date.strftime('%Y-%m-%d %H:%M')"/></td>
-                                    </tr>
-                                    <t t-set="counter" t-value="counter + 1"/>
-                                </t>
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="col-md-12 my-5">
-                        <img src="/onboarding_app/static/images/onboarding.png"  class="img-fluid" alt="Onboarding Image"  style="border: 2px solid red; border-radius: 10px; height:70%;width:100%;object-fit:cover;"/>
-                    </div>
-                   
+                        <div class="container text-center">
+                            <h1>
+                                Welcome to Onboarding Worflow System
+                            </h1>
+                        </div> 
+                    </section>
                 </div>
 
-            </div>
-        </t>       
-        
-    </template>   
+                <div class="container">
+                    <!-- <t t-foreach="onboardings" t-as="o">
+                        <div ></div>
+                    </t> -->
+                    <div class="row">
+                        <h4 class="mt-5 text-center">Onboarding List</h4>
+                        <div class="col-md-12">
+                    
+                            <table class="table table-success table-striped table-hover my-5">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>S.N.</th>
+                                        <th>Title</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Gender</th>
+                                        <th>Department</th>
+                                        <th>Created By</th>
+                                        <th>Created On</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="counter" t-value="1"/>
+                                    <t t-foreach="onboardings" t-as="o">
+                                        <tr>
+                                            <td><t t-out="counter"/></td>
+                                            <td><t t-out="o.title"/></td>
+                                            <td><t t-out="o.phone"/></td>
+                                            <td><t t-out="o.email"/></td>
+                                            <td><t t-out="o.gender"/></td>
+                                            <td><t t-out="o.department_id.name"/></td>
+                                            <td><t t-out="o.create_uid.name"/></td>
+                                            <td><t t-out="o.create_date.strftime('%Y-%m-%d %H:%M')"/></td>
+                                        </tr>
+                                        <t t-set="counter" t-value="counter + 1"/>
+                                    </t>
+                                </tbody>
+                            </table>
 
+                        </div>
+                        <div class="col-md-12 my-5">
+                            <img src="/onboarding_app/static/images/onboarding.png"  class="img-fluid" alt="Onboarding Image"  style="border: 2px solid red; border-radius: 10px; height:70%;width:100%;object-fit:cover;"/>
+                        </div>
+                    
+                    </div>
+
+                </div>
+            </t>       
+            
+        </template>
+        
+        <template id="users" name="Users">
+            <title>odoo-users</title>
+           <t t-call="website.layout">
+               <div class="container">
+                   <h4 class='mt-5 text-center'>User List</h4>
+                   <table class="table table-success table-striped table-hover my-5">
+                       <thead class="table-dark">
+                           <tr>
+                              <th>S.N.</th>
+                               <th>Name</th>
+                               <th>Email</th>
+                               <th>Created On</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                        <t t-set="counter" t-value="1"/>
+                           <t t-foreach="users" t-as="u">
+                               <tr>
+                                    <td><t t-out="counter"/></td>
+                                   <td>
+                                       <t t-out="u.name"/>
+                                   </td>
+                                   <td>
+                                       <t t-out="u.email"/>
+                                   </td>
+                                   <td>
+                                       <t t-out="u.create_date.strftime('%Y-%m-%d %H:%M')"/>
+                                   </td>
+
+                               </tr>
+                                <t t-set="counter" t-value="counter + 1"/>
+                           </t>
+                       </tbody>
+                   </table>
+               </div>
+           </t>
+       </template>
+</data>
 </odoo>

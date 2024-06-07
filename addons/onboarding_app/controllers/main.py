@@ -12,3 +12,16 @@ class Main(http.Controller):
         )
 
         return res
+
+    class UserController(http.Controller):
+
+        @http.route("/users", type="http", auth="public", website=True)
+        def users(self):
+            user = http.request.env["res.users"]
+            users = user.sudo().search([])
+            res = http.request.render(
+                "onboarding_app.users",
+                {"users": users},
+            )
+
+            return res
