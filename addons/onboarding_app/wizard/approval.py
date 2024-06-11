@@ -8,7 +8,6 @@ class AppprovalWizard(models.TransientModel):
     sent_to_approval_id = fields.Many2one(
         "onboarding_app.onboarding",
         "Sent to Approval",
-        readonly=True,
         required=True,
         ondelete="cascade",
     )
@@ -67,15 +66,18 @@ class AppprovalWizard(models.TransientModel):
 
     def approved_user_creation(self):
         onboarding = self.sent_to_approval_id
+        # .with_context(no_invite_email=True)
         user = (
             self.env["res.users"]
-            .with_context(no_invite_email=True)
+            .with_context(no_reset_password=True)
+            .sudo()
             .create(
                 {
                     "name": onboarding.name,
                     "login": onboarding.email,
                     "email": onboarding.email,
                     "phone": onboarding.phone,
+                    "password": onboarding.generate_random_text(),
                 }
             )
         )
@@ -83,13 +85,15 @@ class AppprovalWizard(models.TransientModel):
         if not user:
             raise exceptions.UserError("User creation failed.")
 
-        # password = onboarding.generate_random_text()
+        password = onboarding.generate_random_text()
+        onboarding.write({"user_id": user.id, "password1": password})
+        # onboarding.set_user_password()
+
         # user.sudo()._change_password(password)
         # user._cr.commit()
 
         # user.write({"password": password})
-        onboarding.user_id = user.id
-        onboarding.set_user_password()
+        # onboarding.user_id = user.id
 
         # print(f"generated password: {password}")
         print(f"user id: {onboarding.user_id}")

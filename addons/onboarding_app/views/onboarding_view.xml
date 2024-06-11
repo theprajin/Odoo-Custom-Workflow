@@ -170,7 +170,7 @@
                                     <header>
                                         <button name="btn_complete" string="Completed"
                                                 type="object" class="oe_highlight" title="Completed"
-                                                attrs="{'invisible': ['|',('status', 'in', ['draft','completed']), ('assign_to', '=', False)]}"
+                                                attrs="{'invisible': ['|',('status', 'in', ['draft','completed']), ('user_id', '=', False)]}"
 
                                         />
                                         <field name="status" widget="statusbar"/>
@@ -181,16 +181,16 @@
                                     <group name="group-top">
                                         <group name="group-left">
                                             <field name="title" 
-                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                                attrs="{'readonly': ['|',('user_id', '!=', False), ('is_task_complete', '=', True)]}" />
                                             <field name="description" 
-                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                                attrs="{'readonly': ['|',('user_id', '!=', False), ('is_task_complete', '=', True)]}" />
                                             
                                         </group>
                                         <group name="group-right">
-                                            <field name="assign_to" required="1" 
-                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                            <field name="user_id" required="1" 
+                                                attrs="{'readonly': ['|',('user_id', '!=', False), ('is_task_complete', '=', True)]}" />
                                             <field name="deadline" 
-                                                attrs="{'readonly': ['|',('assign_to', '!=', False), ('is_task_complete', '=', True)]}" />
+                                                attrs="{'readonly': ['|',('user_id', '!=', False), ('is_task_complete', '=', True)]}" />
 
                                         </group>
                                         
@@ -258,8 +258,8 @@
                                     <field name="status"/>
                                     <field name="create_uid" string="Creator"/>
                                     <field name="create_date" string="Created By"/>
-                                    <field name="assign_to" string="Assigned To" 
-                                        attrs="{'invisible': [('assign_to', '=', False)]}" />
+                                    <field name="user_id" string="Assigned To" 
+                                        attrs="{'invisible': [('user_id', '=', False)]}" />
                                 </tree>
                             </field>
                         </page>                        

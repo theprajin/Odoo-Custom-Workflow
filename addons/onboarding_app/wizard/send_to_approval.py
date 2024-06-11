@@ -8,7 +8,6 @@ class SendToApprovalWizard(models.TransientModel):
     draft_id = fields.Many2one(
         "onboarding_app.onboarding",
         "Draft",
-        readonly=True,
         required=True,
         ondelete="cascade",
     )

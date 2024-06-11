@@ -8,7 +8,6 @@ class OngoingWizard(models.TransientModel):
     approval_id = fields.Many2one(
         "onboarding_app.onboarding",
         "Ongoing",
-        readonly=True,
         required=True,
         ondelete="cascade",
     )

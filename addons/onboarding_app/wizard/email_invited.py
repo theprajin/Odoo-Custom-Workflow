@@ -8,7 +8,6 @@ class EmailInvitedWizard(models.TransientModel):
     ongoing_id = fields.Many2one(
         "onboarding_app.onboarding",
         "Email Invited",
-        readonly=True,
         required=True,
         ondelete="cascade",
     )

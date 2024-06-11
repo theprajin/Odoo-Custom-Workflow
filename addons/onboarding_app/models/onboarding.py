@@ -87,7 +87,7 @@ class OnboardingTaskList(models.Model):
     title = fields.Char(required=True)
     description = fields.Char(required=True)
     deadline = fields.Date(string="Deadline(days)", default=fields.Date.today)
-    assign_to = fields.Many2one("res.users", ondelete="cascade")
+    user_id = fields.Many2one("res.users", ondelete="cascade", tracking=True)
     is_task_complete = fields.Boolean(string="Is Task Complete", default=False)
     status = fields.Selection(
         [
@@ -110,12 +110,12 @@ class OnboardingTaskList(models.Model):
         string="Document",
     )
 
-    @api.onchange("assign_to")
+    @api.onchange("user_id")
     def _compute_task_status(self):
         for task in self:
-            if task.assign_to and task.status != "completed":
+            if task.user_id and task.status != "completed":
                 task.status = "assigned"
-            elif not task.assign_to:
+            elif not task.user_id:
                 task.status = "draft"
 
     @api.depends()
@@ -315,12 +315,15 @@ class Onboarding(models.Model):
 
     # genenrate random text of 6 characters for password
     # @api.depends()
-    def generate_random_text(self, length=6):
+    def generate_random_text(self, length=10):
         # letters = string.ascii_letters + string.digits
         # for record in self:
         #     record.password = "".join(random.choice(letters) for i in range(length))
-        letters = string.ascii_letters + string.digits
-        return "".join(random.choice(letters) for i in range(length))
+        letters = (
+            string.ascii_letters + string.digits + string.punctuation + string.digits
+        )
+        password = "".join(random.choice(letters) for i in range(length))
+        return password
 
     # set user password
     def set_user_password(self):

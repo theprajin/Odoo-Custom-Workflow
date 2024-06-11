@@ -8,7 +8,6 @@ class ConfirmWizard(models.TransientModel):
     email_invited_id = fields.Many2one(
         "onboarding_app.onboarding",
         "Confirm",
-        readonly=True,
         required=True,
         ondelete="cascade",
     )

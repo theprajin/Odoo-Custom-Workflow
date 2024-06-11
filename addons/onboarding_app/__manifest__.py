@@ -13,6 +13,7 @@
         "data/task.xml",
         "data/tag.xml",
         "data/send_email_invitation_template.xml",
+        "security/onboarding_security.xml",
         "security/ir.model.access.csv",
         "wizard/send_to_approval_view.xml",
         "wizard/approval_view.xml",
