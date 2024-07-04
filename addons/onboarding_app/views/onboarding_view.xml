@@ -55,14 +55,15 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1><field class="text-break" name="title" placeholder="Enter Title Here" /></h1>
+                        <h1><field class="text-break" name="title" placeholder="Enter Title Here"
+                                 required="1" /></h1>
                     </div>
                     <group name="group_top"> 
                         <group name="group_left" >
                             <!-- <field name="stage_id" /> -->
-                            <field name="name" />
-                            <field name="email" />
-                            <field name="phone" />
+                            <field name="name" required="1" />
+                            <field name="email" required="1" />
+                            <field name="phone" required="1" />
                             <label for="street" string="Address"/>
                                 <div class="o_address_format">
                                     <field name="street" placeholder="Street..." class="o_address_street"/>
@@ -74,8 +75,8 @@
                                 </div>
                         </group>
                         <group name="group_right">
-                            <field name="department_id" />
-                            <field name="job_position_id" />
+                            <field name="department_id" required="1" />
+                            <field name="job_position_id" required="1" />
                             <field name="tags" widget="many2many_tags" />
                         </group>
                     </group>

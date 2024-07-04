@@ -1,0 +1,15 @@
+{   
+    "items": [{
+        "item1" : {
+            "description": "Cheese Burger",
+            "quantity": 1,
+            "unit_price": 250
+        },
+        "item2": {
+            "description": "Ham Burger",
+            "quantity": 1,
+            "unit_price": 150
+        }
+    }]
+
+}

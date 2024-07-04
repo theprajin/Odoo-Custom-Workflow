@@ -1,0 +1,29 @@
+<odoo>
+    <record id="accounting_app_file_upload_wizard_view" model="ir.ui.view">
+        <field name="name">accounting_app.file.upload.wizard</field>
+        <field name="model">accounting_app.file.upload.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="document_filename" invisible="1" />
+                        <field name="document" filename="document_filename"/>
+                    </group>
+                    <footer>
+                        <button string="Upload" type="object" name="action_upload" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_file_upload_wizard" model="ir.actions.act_window" >
+        <field name="name">Invoice Upload</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model" >accounting_app.file.upload.wizard</field>
+        <field name="view_mode" >form</field>
+        <field name="view_id" ref="accounting_app_file_upload_wizard_view" />
+        <field name="target">new</field>
+    </record>
+</odoo>
