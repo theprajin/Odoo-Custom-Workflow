@@ -1,14 +1,91 @@
 {   
+    "invoiceDate": "07/02/2024",
+    "dueDate": "",
+    "customer": { 
+        "name": "Second Company",
+        "street": "123 Downtown St",
+        "street2": "" ,
+        "city": "Bhaktapur",
+        "state": "",
+        "zip": "",
+        "country": "Nepal"
+    },    
+    "contact":{
+        "name": "Child Company 1",
+        "street": "456 Elm St",
+        "street2": "",
+        "city": "Pokhara",
+        "state": "",
+        "zip": "",
+        "country": "Nepal",
+        "type": "contact"
+                
+    },    
+    "invoiceAddress":{
+        "name": "Child Company 2",
+        "street": "456 Highway St",
+        "street2": "",
+        "city": "Biratnagar",
+        "state": "",
+        "zip": "",
+        "country": "Nepal",
+        "type": "invoice"
+                
+    },
+    "deliveryAddress":{
+        "name": "Child Company 3",
+        "street": "456 Elm St",
+        "street2": "",
+        "city": "Kathmandu",
+        "state": "",
+        "zip": "",
+        "country": "Nepal",
+        "type": "delivery"
+                
+    },
+    "privateAddress":{
+        "name": "Child Company 4",
+        "street": "456 Elm St",
+        "street2": "",
+        "city": "Janakpur",
+        "state": "",
+        "zip": "",
+        "country": "Nepal",
+        "type": "private"
+                
+    },
+    "otherAddress":{
+        "name": "Child Company 5",
+        "street": "456 Elm St",
+        "street2": "",
+        "city": "Butwal",
+        "state": "",
+        "zip": "",
+        "country": "Nepal",
+        "type": "other"
+                
+    },
     "items": [{
         "item1" : {
+            "product": "",
             "description": "Cheese Burger",
             "quantity": 1,
-            "unit_price": 250
+            "unitPrice": 250,
+            "discount":""
         },
         "item2": {
+            "product": "",
             "description": "Ham Burger",
             "quantity": 1,
-            "unit_price": 150
+            "unitPrice": 150,
+            "discount":""
+        },
+        "item3": {
+            "product": "",
+            "description": "Cup Cake",
+            "quantity": 5,
+            "unitPrice": 80,
+            "discount":""
         }
     }]
 

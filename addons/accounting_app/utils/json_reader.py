@@ -19,6 +19,4 @@ def from_json_file():
     # Parse the JSON string into a Python object
     data = json.loads(json_data)
 
-    print(data["id"])
-
     return data
