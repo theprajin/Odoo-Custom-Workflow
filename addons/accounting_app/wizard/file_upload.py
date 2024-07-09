@@ -6,7 +6,7 @@ class FileUploadWizard(models.TransientModel):
     _description = "File Upload Wizard"
 
     document = fields.Binary(
-        string="Single Invoice"
+        string="Invoice", required=True
     )  # don't forget to make it required later
     document_filename = fields.Char("Document Filename", store=True)
 
@@ -20,6 +20,8 @@ class FileUploadWizard(models.TransientModel):
         # if self._context.get("params").get("model") != "account.move":
         #     return False
 
-        AccountMove.action_invoice_from_json(invoice_file=self.document)
+        AccountMove.action_invoice_from_json(
+            invoice_file=self.document, filename=self.document_filename
+        )
 
-        return True
+        return {"type": "ir.actions.client", "tag": "reload"}

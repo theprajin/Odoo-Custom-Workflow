@@ -3,6 +3,7 @@
     "dueDate": "",
     "customer": { 
         "name": "Second Company",
+        "email": "second.company@gmail.com",
         "street": "123 Downtown St",
         "street2": "" ,
         "city": "Bhaktapur",
@@ -12,6 +13,7 @@
     },    
     "contact":{
         "name": "Child Company 1",
+        "email": "second.contact@gmail.com",
         "street": "456 Elm St",
         "street2": "",
         "city": "Pokhara",
@@ -23,6 +25,7 @@
     },    
     "invoiceAddress":{
         "name": "Child Company 2",
+        "email": "second.invoice@gmail.com",
         "street": "456 Highway St",
         "street2": "",
         "city": "Biratnagar",
@@ -34,6 +37,7 @@
     },
     "deliveryAddress":{
         "name": "Child Company 3",
+        "email": "second.delivery@gmail.com",
         "street": "456 Elm St",
         "street2": "",
         "city": "Kathmandu",
@@ -45,6 +49,7 @@
     },
     "privateAddress":{
         "name": "Child Company 4",
+        "email": "second.private@gmail.com",
         "street": "456 Elm St",
         "street2": "",
         "city": "Janakpur",
@@ -55,7 +60,8 @@
                 
     },
     "otherAddress":{
-        "name": "Child Company 5",
+        "name": "Child Company 5",       
+        "email": "second.other@gmail.com",
         "street": "456 Elm St",
         "street2": "",
         "city": "Butwal",
@@ -71,21 +77,21 @@
             "description": "Cheese Burger",
             "quantity": 1,
             "unitPrice": 250,
-            "discount":""
+            "discount":2.5
         },
         "item2": {
             "product": "",
             "description": "Ham Burger",
             "quantity": 1,
             "unitPrice": 150,
-            "discount":""
+            "discount":1.5
         },
         "item3": {
             "product": "",
             "description": "Cup Cake",
             "quantity": 5,
             "unitPrice": 80,
-            "discount":""
+            "discount":3
         }
     }]
 
