@@ -38,9 +38,12 @@ class AccountMove(models.Model):
 
         # data = json.loads(self.upload_json_to_api(invoice_file, filename=filename))
         data = self.upload_file_to_api(invoice_file, filename=filename)
-        print(data)
         customer = data.get("customer")
         items = data.get("items", [])
+        invoice = data.get("invoiceAddress")
+        delivery = data.get("deliveryAddress")
+        private = data.get("privateAddress")
+        other = data.get("otherAddress")
 
         customer_with_email = self.env["res.partner"].search(
             [("email", "=", customer.get("email"))], limit=1
@@ -58,7 +61,6 @@ class AccountMove(models.Model):
             self.create_move_line_items(move=move, items=items)
 
             # create invoice address
-            invoice = data.get("invoiceAddress")
             if invoice:
                 invoice_address = self.create_child_address(
                     customer=customer_with_email,
@@ -67,7 +69,6 @@ class AccountMove(models.Model):
                 )
 
             # create delivery address
-            delivery = data.get("deliveryAddress")
             if delivery:
                 delivery_address = self.create_child_address(
                     customer=customer_with_email,
@@ -76,7 +77,6 @@ class AccountMove(models.Model):
                 )
 
             # create private address
-            private = data.get("privateAddress")
             if private:
                 private_address = self.create_child_address(
                     customer=customer_with_email,
@@ -85,21 +85,11 @@ class AccountMove(models.Model):
                 )
 
             # create other address
-            other = data.get("otherAddress")
             if other:
                 other_address = self.create_child_address(
                     customer=customer_with_email,
                     address=other,
                     type=other.get("type"),
-                )
-
-            # create contact address
-            contact = data.get("contact")
-            if contact:
-                contact_address = self.create_child_address(
-                    customer=customer_with_email,
-                    address=contact,
-                    type=contact.get("type"),
                 )
 
             return True
@@ -113,7 +103,6 @@ class AccountMove(models.Model):
             self.create_move_line_items(move=move, items=items)
 
             # create invoice address
-            invoice = data.get("invoiceAddress")
             invoice_address = self.create_child_address(
                 customer=customer_with_name,
                 address=invoice,
@@ -121,7 +110,6 @@ class AccountMove(models.Model):
             )
 
             # create delivery address
-            delivery = data.get("deliveryAddress")
             if delivery:
                 delivery_address = self.create_child_address(
                     customer=customer_with_name,
@@ -130,7 +118,6 @@ class AccountMove(models.Model):
                 )
 
             # create private address
-            private = data.get("privateAddress")
             if private:
                 private_address = self.create_child_address(
                     customer=customer_with_name,
@@ -139,21 +126,11 @@ class AccountMove(models.Model):
                 )
 
             # create other address
-            other = data.get("otherAddress")
             if other:
                 other_address = self.create_child_address(
                     customer=customer_with_name,
                     address=other,
                     type=other.get("type"),
-                )
-
-            # create contact address
-            contact = data.get("contact")
-            if contact:
-                contact_address = self.create_child_address(
-                    customer=customer_with_name,
-                    address=contact,
-                    type=contact.get("type"),
                 )
 
         else:
@@ -174,7 +151,6 @@ class AccountMove(models.Model):
             )
 
             # create invoice address
-            invoice = data.get("invoiceAddress")
             if invoice:
                 invoice_address = self.create_child_address(
                     customer=customer_partner,
@@ -183,7 +159,6 @@ class AccountMove(models.Model):
                 )
 
             # create delivery address
-            delivery = data.get("deliveryAddress")
             if delivery:
                 delivery_address = self.create_child_address(
                     customer=customer_partner,
@@ -192,7 +167,6 @@ class AccountMove(models.Model):
                 )
 
             # create private address
-            private = data.get("privateAddress")
             if private:
                 private_address = self.create_child_address(
                     customer=customer_partner,
@@ -201,21 +175,11 @@ class AccountMove(models.Model):
                 )
 
             # create other address
-            other = data.get("otherAddress")
             if other:
                 other_address = self.create_child_address(
                     customer=customer_partner,
                     address=other,
                     type=other.get("type"),
-                )
-
-            # create contact address
-            contact = data.get("contact")
-            if contact:
-                contact_address = self.create_child_address(
-                    customer=customer_partner,
-                    address=contact,
-                    type=contact.get("type"),
                 )
 
             # Create account move (invoice)
@@ -324,7 +288,6 @@ class AccountMove(models.Model):
                 .id,
             }
         )
-        pass
 
     @api.model
     def create_account_move(self, customer_partner):
@@ -341,23 +304,19 @@ class AccountMove(models.Model):
     @api.model
     def create_move_line_items(self, move, items):
         for item in items:
-
             for key, item_ref in item.items():
-                # product_item = self.env["product.product"].search(
-                #     [("name", "=", item_ref.get("name"))], limit=1
-                # )
-
-                # print(product_item)
-
-                # if not product_item:
-                product = self.env["product.product"].create(
-                    {
-                        "name": item_ref.get("description"),
-                        "list_price": item_ref.get("unitPrice"),
-                    }
+                product = self.env["product.product"].search(
+                    [("name", "ilike", item_ref.get("description"))],
+                    limit=1,
                 )
 
-                # else:
+                if not product:
+                    product = self.env["product.product"].create(
+                        {
+                            "name": item_ref.get("description"),
+                        }
+                    )
+
                 self.env["account.move.line"].create(
                     {
                         "move_id": move.id,
