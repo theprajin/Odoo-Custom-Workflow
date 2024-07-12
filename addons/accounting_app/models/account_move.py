@@ -4,6 +4,7 @@ import tempfile
 import json
 import requests
 import base64
+from datetime import datetime
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
@@ -44,6 +45,7 @@ class AccountMove(models.Model):
         delivery = data.get("deliveryAddress")
         private = data.get("privateAddress")
         other = data.get("otherAddress")
+        invoice_date = data.get("invoiceDate")
 
         customer_with_email = self.env["res.partner"].search(
             [("email", "=", customer.get("email"))], limit=1
@@ -55,7 +57,9 @@ class AccountMove(models.Model):
         # if the customer has an email field not empty
         if customer_with_email.email:
             # Create account move (invoice)
-            move = self.create_account_move(customer_partner=customer_with_email)
+            move = self.create_account_move(
+                customer_partner=customer_with_email, invoice_date=invoice_date
+            )
 
             # Create move lines (items)
             self.create_move_line_items(move=move, items=items)
@@ -97,7 +101,9 @@ class AccountMove(models.Model):
             customer_with_name.name
         ):  # if customer has no email or customer with the email does not exist
             # Create account move (invoice)
-            move = self.create_account_move(customer_partner=customer_with_name)
+            move = self.create_account_move(
+                customer_partner=customer_with_name, invoice_date=invoice_date
+            )
 
             # Create move lines (items)
             self.create_move_line_items(move=move, items=items)
@@ -183,7 +189,9 @@ class AccountMove(models.Model):
                 )
 
             # Create account move (invoice)
-            move = self.create_account_move(customer_partner=customer_partner)
+            move = self.create_account_move(
+                customer_partner=customer_partner, invoice_date=invoice_date
+            )
 
             # Create move lines (items)
             self.create_move_line_items(move=move, items=items)
@@ -290,12 +298,15 @@ class AccountMove(models.Model):
         )
 
     @api.model
-    def create_account_move(self, customer_partner):
+    def create_account_move(self, customer_partner, invoice_date=None):
         # Create account move (invoice)
         move = self.env["account.move"].create(
             {
                 "partner_id": customer_partner.id,
                 "move_type": "out_invoice",  # or "in_invoice" for vendor bills
+                "invoice_date": datetime.strptime(invoice_date, "%m/%d/%Y").strftime(
+                    "%Y-%m-%d"
+                ),
             }
         )
 
